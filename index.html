@@ -1,43 +1,1306 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="مائدة — منصة مجتمعية لمشاركة الأطباق وتقييمها وحساب قيمتها الغذائية">
-<title>مائدة | مشاركة الأطباق</title>
-<style>
-:root{--cream:#f7f4ec;--paper:#fffdf8;--green:#173f35;--green2:#245d4d;--sage:#dbe8d5;--mint:#edf4e9;--orange:#dd704b;--yellow:#efb84f;--ink:#21322d;--muted:#72807a;--line:#e3e7dc;--shadow:0 16px 40px #1d3d3117;--radius:22px;--font-size:16px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Tahoma,Arial,sans-serif;font-size:var(--font-size);line-height:1.6}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{max-width:1180px;margin:auto;padding:0 22px}
-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 0}.brand{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:900;color:var(--green)}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:white;background:var(--green);transform:rotate(-8deg)}nav{display:flex;gap:24px;color:var(--muted);font-size:.9rem;font-weight:bold}nav a:hover{color:var(--green)}.header-actions{display:flex;align-items:center;gap:8px}.button,.icon-button{border:0;border-radius:999px;padding:10px 17px;color:white;background:var(--green);font-weight:bold;transition:.2s}.button:hover{background:var(--green2);transform:translateY(-2px)}.button.light{color:var(--green);background:#e5efdf}.button.outline{color:var(--green);background:transparent;border:1px solid #cfd9cc}.icon-button{width:42px;height:42px;padding:0;font-size:1.2rem}.settings-panel{display:none;position:absolute;z-index:3;top:70px;left:0;min-width:245px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:var(--shadow)}.settings-wrap{position:relative}.settings-wrap.open .settings-panel{display:block}.settings-panel h3{margin:0 0 12px;color:var(--green);font-size:1rem}.settings-panel label{display:block;margin:8px 0 4px;color:var(--muted);font-size:.78rem}.settings-panel select{width:100%;padding:8px}
-.hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:55px;padding:55px 0 75px}.eyebrow{margin:0 0 12px;color:var(--orange);font-size:.78rem;font-weight:900;letter-spacing:.12em}.hero h1{max-width:650px;margin:0;color:var(--green);font-size:clamp(2.6rem,6vw,5rem);line-height:1.05;letter-spacing:-.06em}.hero p:not(.eyebrow){max-width:500px;margin:20px 0 28px;color:var(--muted)}.hero-buttons{display:flex;flex-wrap:wrap;gap:10px}.hero-art{position:relative;min-height:340px;display:grid;place-items:center}.blob{width:min(100%,410px);aspect-ratio:1;border-radius:50% 45% 48% 52%;background:#d8e6d0;transform:rotate(-9deg);display:grid;place-items:center}.plate{width:78%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#fffaf0;box-shadow:0 25px 35px #2c4f371f;transform:rotate(9deg);font-size:clamp(5rem,13vw,8rem)}.note{position:absolute;padding:8px 14px;border-radius:12px;color:var(--green);background:white;box-shadow:var(--shadow);font-size:.8rem;font-weight:bold;top:15%;left:2%;transform:rotate(-6deg)}.note.bottom{top:auto;left:auto;right:2%;bottom:13%;transform:rotate(6deg)}
-main{padding-bottom:65px}.heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.heading h2{margin:0;color:var(--green);font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.04em}.heading p{margin:4px 0 0;color:var(--muted)}.filters{display:flex;flex-wrap:wrap;gap:7px}.filter{border:1px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--muted);background:transparent;font-size:.8rem;font-weight:bold}.filter.active,.filter:hover{color:white;background:var(--green);border-color:var(--green)}.dish-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{overflow:hidden;border:1px solid #e1e5db;border-radius:var(--radius);background:var(--paper);box-shadow:0 5px 14px #20413108;transition:.25s}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.dish-image{display:block;width:100%;height:205px;object-fit:cover;background:var(--sage)}.card-body{padding:16px}.tag{display:inline-block;margin-bottom:8px;padding:4px 10px;border-radius:99px;color:#4a745d;background:var(--mint);font-size:.68rem;font-weight:bold}.card h3{margin:0;color:var(--green);font-size:1.13rem}.desc{height:47px;overflow:hidden;margin:8px 0 12px;color:var(--muted);font-size:.88rem}.nutrition{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:10px 0;padding:9px;border-radius:12px;background:#f2f6ed;color:var(--green);font-size:.7rem;text-align:center}.nutrition b{display:block;font-size:.82rem}.rating{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #edf0e8;padding-top:11px}.stars{color:var(--yellow);font-size:1.1rem;letter-spacing:1px}.rating small{color:var(--muted)}.rate-buttons{display:flex;gap:1px;margin-top:3px}.rate-star{border:0;padding:0 2px;color:#d4ddd0;background:none;font-size:1.15rem}.rate-star:hover{color:var(--yellow)}.actions{display:flex;gap:5px;margin-top:9px}.text-button{border:0;padding:4px 8px;border-radius:8px;color:var(--muted);background:transparent;font-size:.74rem;font-weight:bold}.text-button:hover{color:var(--green);background:var(--mint)}.text-button.delete:hover{color:#a94234;background:#fff0ec}.empty{grid-column:1/-1;padding:40px;text-align:center;border:1px dashed #c8d7c4;border-radius:var(--radius);color:var(--muted)}
-.form-section{max-width:940px;margin:70px auto 0;padding:32px;border-radius:28px;color:white;background:var(--green);box-shadow:var(--shadow)}.form-head{display:flex;justify-content:space-between;gap:15px;margin-bottom:22px}.form-head h2{margin:0;color:white}.form-head p{max-width:360px;margin:0;color:#bdd1bf;font-size:.85rem}.form{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:5px}.full{grid-column:1/-1}label{color:#d9e7d7;font-size:.77rem;font-weight:bold}input,textarea,select{width:100%;border:1px solid #dfe8db;border-radius:11px;padding:10px 12px;outline:0;color:var(--ink);background:white}textarea{min-height:75px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#94c88c;box-shadow:0 0 0 3px #9bca922d}.file-row{display:flex;gap:8px;align-items:center}.file-row input{flex:1}.file-button{display:inline-block;white-space:nowrap;border-radius:11px;padding:10px 12px;color:var(--green);background:#e4f0dd;font-size:.78rem;font-weight:bold;cursor:pointer}.file-button input{display:none}.preview{display:none;width:100px;height:70px;object-fit:cover;border-radius:10px;margin-top:5px}.form-submit{grid-column:1/-1;justify-self:start}.cancel{display:none;border:0;color:#d9e7d7;background:transparent;font-weight:bold}.editing .cancel{display:inline-block}
-.tools{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:48px 0}.tool{padding:24px;border:1px solid var(--line);border-radius:22px;background:var(--paper);box-shadow:0 5px 14px #20413108}.tool h2{margin:0;color:var(--green);font-size:1.35rem}.tool p{margin:4px 0 15px;color:var(--muted);font-size:.83rem}.calc{display:grid;grid-template-columns:1fr 1fr;gap:10px}.calc-result{grid-column:1/-1;padding:13px;border-radius:13px;color:var(--green);background:var(--mint);font-weight:bold}.calc-result strong{font-size:1.4rem}.about{margin:20px 0;padding:20px;text-align:center;color:var(--muted);font-size:.85rem}.about strong{color:var(--green)}footer{padding:25px;text-align:center;color:#8b988e;font-size:.78rem}.toast{position:fixed;right:20px;bottom:20px;z-index:5;padding:12px 16px;border-radius:12px;color:white;background:var(--green);box-shadow:var(--shadow);opacity:0;transform:translateY(15px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
-@media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:35px}.hero-art{max-width:500px;width:100%;margin:auto}.dish-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.wrap{padding:0 16px}nav{display:none}.hero{padding:25px 0 45px}.hero h1{font-size:3rem}.heading{display:block}.filters{margin-top:15px}.dish-grid,.tools{grid-template-columns:1fr}.form-section{padding:24px 17px}.form{grid-template-columns:1fr}.full,.form-submit{grid-column:auto}.form-head{display:block}.form-head p{margin-top:6px}.settings-panel{left:auto;right:0}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="منصة مجتمعية لمشاركة الأطباق وتقييمها وحساب قيمتها الغذائية" />
+  <title>مائدة | مشاركة الأطباق</title>
+  <style>
+    :root {
+      --cream: #f7f4ec;
+      --paper: #fffdf8;
+      --green: #173f35;
+      --green2: #245d4d;
+      --sage: #dbe8d5;
+      --mint: #edf4e9;
+      --orange: #dd704b;
+      --yellow: #efb84f;
+      --ink: #21322d;
+      --muted: #72807a;
+      --line: #e3e7dc;
+      --shadow: 0 16px 40px rgba(29, 61, 49, .12);
+      --radius: 24px;
+      --font-size: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: Tahoma, Arial, sans-serif;
+      font-size: var(--font-size);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 22px; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: -.03em;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      transform: rotate(-8deg);
+    }
+    nav { display: flex; gap: 28px; color: var(--muted); font-size: .9rem; font-weight: 700; }
+    nav a:hover { color: var(--green); }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .button, .icon-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 18px;
+      background: var(--green);
+      color: white;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+    .button:hover { background: var(--green2); transform: translateY(-2px); }
+    .button.outline {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid #cdd9cf;
+    }
+    .button.light {
+      background: #e6f0df;
+      color: var(--green);
+    }
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+    }
+    .settings-wrap { position: relative; }
+    .settings-panel {
+      display: none;
+      position: absolute;
+      top: 55px;
+      inset-inline-end: 0;
+      min-width: 245px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      z-index: 50;
+    }
+    .settings-wrap.open .settings-panel { display: block; }
+    .settings-panel h3 {
+      margin: 0 0 12px;
+      color: var(--green);
+      font-size: 1rem;
+    }
+    .settings-panel label {
+      display: block;
+      margin: 10px 0 6px;
+      color: var(--muted);
+      font-size: .77rem;
+      font-weight: 700;
+    }
+    .settings-panel select, .settings-panel input, input, textarea, select {
+      width: 100%;
+      border: 1px solid #dce5d8;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: white;
+      color: var(--ink);
+      outline: none;
+    }
+    .settings-panel select:focus, input:focus, textarea:focus, select:focus {
+      border-color: #9bc59a;
+      box-shadow: 0 0 0 3px rgba(155, 197, 154, .18);
+    }
+    .small-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .small-actions button {
+      flex: 1;
+      min-width: 110px;
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 800;
+      font-size: .74rem;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 55px;
+      align-items: center;
+      padding: 55px 0 75px;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--orange);
+      font-size: .8rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.7rem, 6vw, 5rem);
+      line-height: 1.04;
+      letter-spacing: -.065em;
+      color: var(--green);
+      max-width: 650px;
+    }
+    .hero-copy {
+      max-width: 500px;
+      margin: 18px 0 28px;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 340px;
+    }
+    .blob {
+      width: min(100%, 420px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      background: #d8e6d0;
+      border-radius: 50% 45% 48% 52%;
+      transform: rotate(-9deg);
+    }
+    .plate {
+      width: 78%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      background: #fffaf0;
+      border-radius: 50%;
+      box-shadow: 0 25px 35px rgba(44, 79, 55, .18);
+      font-size: clamp(5rem, 13vw, 8rem);
+      transform: rotate(9deg);
+    }
+    .note {
+      position: absolute;
+      padding: 8px 14px;
+      border-radius: 12px;
+      color: var(--green);
+      background: white;
+      box-shadow: var(--shadow);
+      font-size: .8rem;
+      font-weight: 800;
+      top: 15%;
+      inset-inline-start: 2%;
+      transform: rotate(-6deg);
+    }
+    .note.bottom {
+      top: auto;
+      inset-inline-end: 2%;
+      inset-inline-start: auto;
+      bottom: 13%;
+      transform: rotate(6deg);
+    }
+    main { padding-bottom: 65px; }
+    .heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .heading h2 {
+      margin: 0;
+      color: var(--green);
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      letter-spacing: -.04em;
+    }
+    .heading p { margin: 5px 0 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter {
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 14px;
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 800;
+    }
+    .filter.active, .filter:hover {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+    .dish-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid #e1e5db;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 5px 14px rgba(32, 65, 49, .04);
+      transition: .25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    .dish-image {
+      display: block;
+      width: 100%;
+      height: 205px;
+      object-fit: cover;
+      background: var(--sage);
+    }
+    .card-body { padding: 16px; }
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: #4a745d;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .card h3 {
+      margin: 0;
+      color: var(--green);
+      font-size: 1.15rem;
+      letter-spacing: -.03em;
+    }
+    .desc {
+      max-height: 45px;
+      margin: 9px 0 12px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .nutrition {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 10px 8px;
+      border-radius: 12px;
+      background: #f2f6ed;
+      color: var(--green);
+      text-align: center;
+      font-size: .72rem;
+    }
+    .nutrition strong { display: block; font-size: .82rem; }
+    .rating {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 11px;
+      border-top: 1px solid #edf0e8;
+    }
+    .stars { color: var(--yellow); font-size: 1.08rem; letter-spacing: 1px; }
+    .rating small { color: var(--muted); }
+    .rate-buttons { display: flex; gap: 1px; margin-top: 5px; }
+    .rate-star {
+      background: transparent;
+      border: 0;
+      padding: 0 2px;
+      color: #d4ddd0;
+      font-size: 1.12rem;
+    }
+    .rate-star:hover { color: var(--yellow); }
+    .actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .text-button {
+      border: 0;
+      border-radius: 8px;
+      padding: 5px 9px;
+      background: transparent;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 800;
+    }
+    .text-button:hover { background: var(--mint); color: var(--green); }
+    .text-button.delete:hover { background: #fff0ec; color: #a94234; }
+    .empty {
+      grid-column: 1 / -1;
+      padding: 42px 16px;
+      border: 1px dashed #c8d7c4;
+      border-radius: var(--radius);
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,.25);
+    }
+    .empty strong { display: block; color: var(--green); margin-bottom: 8px; font-size: 1.05rem; }
+    .form-section {
+      max-width: 940px;
+      margin: 70px auto 0;
+      padding: 32px;
+      background: var(--green);
+      color: white;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .form-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .form-head h2 { margin: 0; color: white; letter-spacing: -.04em; }
+    .form-head p { margin: 6px 0 0; max-width: 380px; color: #bfd2c0; font-size: .85rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    label {
+      color: #d9e7d7;
+      font-size: .77rem;
+      font-weight: 800;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      background: white;
+      color: var(--ink);
+      border: 1px solid #dfe8db;
+      border-radius: 11px;
+      padding: 10px 12px;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .file-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .file-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      border-radius: 11px;
+      background: #e5f0df;
+      color: var(--green);
+      font-size: .78rem;
+      font-weight: 800;
+      padding: 0 12px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .file-button input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .preview {
+      display: none;
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-top: 3px;
+    }
+    .submit-area { display: flex; gap: 12px; align-items: center; margin-top: 4px; }
+    .cancel-edit {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: #d9e7d7;
+      font-weight: 800;
+    }
+    .editing .cancel-edit { display: inline-block; }
+    .tools {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 20px;
+      margin-top: 46px;
+    }
+    .tool {
+      padding: 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 5px 14px rgba(32, 65, 49, .04);
+    }
+    .tool h3 {
+      margin: 0;
+      color: var(--green);
+      font-size: 1.35rem;
+      letter-spacing: -.03em;
+    }
+    .tool p { margin: 5px 0 15px; color: var(--muted); font-size: .83rem; }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .calc-result {
+      grid-column: 1 / -1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+    .about-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      gap: 10px;
+    }
+    .about-box p { margin: 0; }
+    .about-box strong { color: var(--green); }
+    .about-box a { color: var(--green); font-weight: 800; }
+    .export-area {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .ghost-button {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 12px;
+      background: var(--mint);
+      color: var(--green);
+      font-size: .75rem;
+      font-weight: 800;
+    }
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 100;
+      padding: 12px 16px;
+      background: var(--green);
+      color: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: .25s ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    footer {
+      padding: 26px 0 34px;
+      text-align: center;
+      color: #8b988e;
+      font-size: .78rem;
+    }
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; padding-top: 35px; padding-bottom: 48px; }
+      .hero-art { max-width: 500px; width: 100%; margin: auto; }
+      .dish-grid { grid-template-columns: repeat(2, 1fr); }
+      .tools { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .wrap { padding: 0 16px; }
+      nav { display: none; }
+      .hero { padding: 25px 0 44px; }
+      .heading { display: block; }
+      .filters { margin-top: 15px; }
+      .dish-grid, .form-grid, .calc-grid { grid-template-columns: 1fr; }
+      .field.full, .submit-area { grid-column: auto; }
+      .form-section { padding: 24px 17px; }
+      .form-head { display: block; }
+      .form-head p { margin-top: 6px; }
+      .small-actions { flex-direction: column; }
+      .settings-panel { inset-inline-end: 0; }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-<header><a class="brand" href="#top"><span class="brand-mark">✦</span><span data-i18n="brand">مائدة</span></a><nav><a href="#dishes" data-i18n="explore">استكشف الأطباق</a><a href="#share" data-i18n="shareNav">أضف طبقاً</a><a href="#tools" data-i18n="toolsNav">الأدوات</a></nav><div class="header-actions"><div class="settings-wrap" id="settingsWrap"><button class="icon-button" id="settingsBtn" aria-label="الإعدادات">⚙</button><div class="settings-panel"><h3 data-i18n="settings">الإعدادات</h3><label for="language" data-i18n="language">اللغة</label><select id="language"><option value="ar">العربية</option><option value="en">English</option></select><label for="fontSize" data-i18n="fontSize">حجم الخط</label><select id="fontSize"><option value="14">صغير</option><option value="16" selected>متوسط</option><option value="18">كبير</option><option value="20">كبير جداً</option></select></div></div><a class="button" href="#share" data-i18n="addDish">+ إضافة طبق</a></div></header>
-<section class="hero" id="top"><div><p class="eyebrow" data-i18n="eyebrow">مائدة مجتمعية</p><h1 data-i18n="heroTitle">الطعام يصبح ألذ عندما نتشاركه.</h1><p data-i18n="heroText">اكتشف أطباقاً منزلية من مجتمعك، شارك وصفتك، قيّم أطباق الآخرين، واحسب قيمتها الغذائية بسهولة.</p><div class="hero-buttons"><a class="button" href="#dishes" data-i18n="discover">اكتشف الأطباق ↓</a><a class="button outline" href="#share" data-i18n="shareRecipe">شارك وصفتك</a></div></div><div class="hero-art" aria-hidden="true"><div class="blob"><div class="plate">🥗</div></div><div class="note" data-i18n="note1">محضر بحب ♡</div><div class="note bottom" data-i18n="note2">شارك الطبق!</div></div></section>
-<main><section id="dishes"><div class="heading"><div><h2 data-i18n="community">من أطباق المجتمع</h2><p id="dishCount"></p></div><div class="filters"><button class="filter active" data-category="all" data-i18n="all">الكل</button><button class="filter" data-category="dishes" data-i18n="dishes">أطباق</button><button class="filter" data-category="desserts" data-i18n="desserts">حلويات</button><button class="filter" data-category="fast" data-i18n="fast">أكلات سريعة</button><button class="filter" data-category="drinks" data-i18n="drinks">مشروبات</button></div></div><div class="dish-grid" id="dishGrid"></div></section>
-<section class="form-section" id="share"><div class="form-head"><div><h2 id="formTitle" data-i18n="formTitle">أحضر طبقك إلى المائدة</h2><p data-i18n="formText">أضف صورة طبقك من جهازك أو التقط صورة مباشرة بالكاميرا.</p></div></div><form class="form" id="dishForm"><div class="field"><label for="name" data-i18n="dishName">اسم الطبق</label><input id="name" required maxlength="60" placeholder="مثال: كسكس بالخضار"></div><div class="field"><label for="category" data-i18n="category">القسم</label><select id="category"><option value="dishes" data-i18n="dishes">أطباق</option><option value="desserts" data-i18n="desserts">حلويات</option><option value="fast" data-i18n="fast">أكلات سريعة</option><option value="drinks" data-i18n="drinks">مشروبات</option></select></div><div class="field full"><label for="description" data-i18n="description">وصف قصير</label><textarea id="description" required maxlength="180" placeholder="ما الذي يجعل طبقك مميزاً؟"></textarea></div><div class="field full"><label data-i18n="dishPhoto">صورة الطبق</label><div class="file-row"><label class="file-button"><span data-i18n="choosePhoto">📁 اختر صورة</span><input id="imageFile" type="file" accept="image/*"></label><label class="file-button"><span data-i18n="takePhoto">📷 التقط صورة</span><input id="cameraFile" type="file" accept="image/*" capture="environment"></label><input id="imageUrl" type="url" placeholder="أو ضع رابط الصورة"></div><img class="preview" id="preview" alt="معاينة الصورة"></div><div class="field"><label for="quantity" data-i18n="quantity">الكمية (غرام — 100 على الأقل)</label><input id="quantity" type="number" min="100" value="100" required></div><div class="field"><label for="calories" data-i18n="calories">السعرات لكل 100غ</label><input id="calories" type="number" min="0" value="0"></div><div class="field"><label for="protein" data-i18n="protein">البروتين لكل 100غ</label><input id="protein" type="number" min="0" step=".1" value="0"></div><div class="field"><label for="carbs" data-i18n="carbs">الكربوهيدرات لكل 100غ</label><input id="carbs" type="number" min="0" step=".1" value="0"></div><div class="field"><label for="fat" data-i18n="fat">الدهون لكل 100غ</label><input id="fat" type="number" min="0" step=".1" value="0"></div><div class="field"><label for="fiber" data-i18n="fiber">الألياف لكل 100غ</label><input id="fiber" type="number" min="0" step=".1" value="0"></div><button class="button light form-submit" id="submit" type="submit" data-i18n="addToTable">أضف الطبق إلى المائدة</button><button class="cancel" id="cancel" type="button" data-i18n="cancel">إلغاء التعديل</button></form></section>
-<section class="tools" id="tools"><div class="tool"><h2 data-i18n="calculator">🧮 آلة حاسبة غذائية</h2><p data-i18n="calculatorText">أدخل القيم الموجودة لكل 100غ، ثم حدد الكمية المطلوبة.</p><div class="calc"><div class="field"><label for="calcQty" data-i18n="desiredQuantity">الكمية المطلوبة (غ)</label><input id="calcQty" type="number" min="100" value="100"></div><div class="field"><label for="calcCal" data-i18n="calcCalories">السعرات لكل 100غ</label><input id="calcCal" type="number" min="0" value="0"></div><div class="field"><label for="calcProtein" data-i18n="protein">البروتين</label><input id="calcProtein" type="number" min="0" step=".1" value="0"></div><div class="field"><label for="calcCarbs" data-i18n="carbs">الكربوهيدرات</label><input id="calcCarbs" type="number" min="0" step=".1" value="0"></div><div class="field"><label for="calcFat" data-i18n="fat">الدهون</label><input id="calcFat" type="number" min="0" step=".1" value="0"></div><button class="button" id="calculate" type="button" data-i18n="calculate">احسب</button><div class="calc-result" id="calcResult">—</div></div></div><div class="tool about"><h2 data-i18n="developer">المبرمج</h2><p><strong>BOABCA AZEDDIN</strong></p><p><a href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></p><p data-i18n="contactText">للتواصل والاقتراحات، يمكنكم مراسلة المبرمج عبر البريد الإلكتروني.</p></div></section></main>
-<footer data-i18n="footer">صُنع بحب لكل من يؤمن أن أفضل الوصفات هي التي نتشاركها.</footer></div><div class="toast" id="toast"></div>
-<script>
-const key='maida-dishes-v2',fallback='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80';
-const starter=[{id:'s1',name:'سلطة الحديقة',description:'خضروات طازجة مع جبن الفيتا وتتبيلة الليمون.',category:'dishes',image:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',ratings:[5,5,4],nutrition:{calories:120,protein:5,carbs:14,fat:6,fiber:4}},{id:'s2',name:'فطائر التوت',description:'فطائر هشة مع التوت الطازج والعسل.',category:'desserts',image:'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=900&q=80',ratings:[5,4,5],nutrition:{calories:230,protein:6,carbs:35,fat:8,fiber:2}},{id:'s3',name:'عصير البرتقال',description:'عصير طبيعي منعش غني بفيتامين C.',category:'drinks',image:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&q=80',ratings:[4,5],nutrition:{calories:45,protein:.7,carbs:10,fat:.2,fiber:.2}}];
-let dishes=read(),filter='all',editing=null,imageData='';const $=id=>document.getElementById(id),grid=$('dishGrid'),form=$('dishForm');
-function read(){try{let x=JSON.parse(localStorage.getItem(key));return Array.isArray(x)?x:starter}catch(e){return starter}}function save(){localStorage.setItem(key,JSON.stringify(dishes))}function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}function avg(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:0}function categoryName(c){return ({dishes:'أطباق',desserts:'حلويات',fast:'أكلات سريعة',drinks:'مشروبات'})[c]||c}
-function render(){let list=dishes.filter(x=>filter==='all'||x.category===filter);$('dishCount').textContent=`${dishes.length} ${dishes.length===1?'طبق':'أطباق'} مشتركة مع المجتمع`;grid.innerHTML=list.length?list.map(d=>{let n=d.nutrition||{},a=avg(d.ratings||[]);return `<article class="card"><img class="dish-image" src="${esc(d.image||fallback)}" alt="${esc(d.name)}" onerror="this.src='${fallback}'"><div class="card-body"><span class="tag">${esc(categoryName(d.category))}</span><h3>${esc(d.name)}</h3><p class="desc">${esc(d.description)}</p><div class="nutrition"><span><b>${Math.round(n.calories||0)}</b> kcal</span><span><b>${Number(n.protein||0).toFixed(1)}</b> بروتين</span><span><b>${Number(n.carbs||0).toFixed(1)}</b> كربوهيدرات</span><span><b>${Number(n.fat||0).toFixed(1)}</b> دهون</span></div><div class="rating"><div><span class="stars">${[1,2,3,4,5].map(i=>i<=Math.round(a)?'★':'☆').join('')}</span> <small>${a?a.toFixed(1):'—'} (${(d.ratings||[]).length})</small><div class="rate-buttons" data-id="${d.id}">${[1,2,3,4,5].map(i=>`<button class="rate-star" data-score="${i}" aria-label="${i}">★</button>`).join('')}</div></div><small>قيّم الطبق</small></div><div class="actions"><button class="text-button edit" data-id="${d.id}">تعديل</button><button class="text-button delete" data-id="${d.id}">حذف</button></div></div></article>`}).join(''):'<div class="empty"><strong>لا توجد أطباق في هذا القسم بعد.</strong>كن أول من يضيف طبقاً إلى المائدة.</div>';grid.querySelectorAll('.rate-star').forEach(b=>b.onclick=()=>{let d=dishes.find(x=>x.id===b.parentElement.dataset.id);d.ratings=d.ratings||[];d.ratings.push(+b.dataset.score);save();render();toast('شكراً على تقييمك!')});grid.querySelectorAll('.edit').forEach(b=>b.onclick=()=>edit(b.dataset.id));grid.querySelectorAll('.delete').forEach(b=>b.onclick=()=>del(b.dataset.id))}
-function edit(id){let d=dishes.find(x=>x.id===id);editing=id;form.classList.add('editing');$('formTitle').textContent='تعديل الطبق';$('submit').textContent='حفظ التعديلات';$('name').value=d.name;$('category').value=d.category;$('description').value=d.description;$('imageUrl').value=d.image&&d.image.startsWith('data:')?'':d.image||'';imageData=d.image&&d.image.startsWith('data:')?d.image:'';fill(d.nutrition||{});$('share').scrollIntoView({behavior:'smooth'});$('name').focus()}
-function del(id){let d=dishes.find(x=>x.id===id);if(confirm(`هل تريد حذف «${d.name}»؟`)){dishes=dishes.filter(x=>x.id!==id);save();render();toast('تم حذف الطبق')}}function fill(n){['calories','protein','carbs','fat','fiber'].forEach(k=>$(k).value=n[k]??0)}function reset(){editing=null;form.reset();form.classList.remove('editing');$('formTitle').textContent='أحضر طبقك إلى المائدة';$('submit').textContent='أضف الطبق إلى المائدة';$('quantity').value=100;imageData='';$('preview').style.display='none'}function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2400)}
-function fileRead(file){if(!file)return;let r=new FileReader();r.onload=()=>{imageData=r.result;$('preview').src=imageData;$('preview').style.display='block'};r.readAsDataURL(file)}$('imageFile').onchange=e=>fileRead(e.target.files[0]);$('cameraFile').onchange=e=>fileRead(e.target.files[0]);
-form.onsubmit=e=>{e.preventDefault();let q=Math.max(100,+$('quantity').value||100),n={calories:+$('calories').value||0,protein:+$('protein').value||0,carbs:+$('carbs').value||0,fat:+$('fat').value||0,fiber:+$('fiber').value||0};let data={name:$('name').value.trim(),description:$('description').value.trim(),category:$('category').value,image:imageData||$('imageUrl').value.trim()||fallback,nutrition:n,quantity:q};if(editing){Object.assign(dishes.find(x=>x.id===editing),data);toast('تم تحديث الطبق')}else{dishes.unshift({id:'d'+Date.now(),...data,ratings:[]});toast('تمت إضافة الطبق إلى المائدة')}save();reset();render();$('dishes').scrollIntoView({behavior:'smooth'})};$('cancel').onclick=reset;
-document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{filter=b.dataset.category;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));render()});
-$('calculate').onclick=()=>{let q=Math.max(100,+$('calcQty').value||100),m=q/100,c=(+$('calcCal').value||0)*m,p=(+$('calcProtein').value||0)*m,car=(+$('calcCarbs').value||0)*m,f=(+$('calcFat').value||0)*m;$('calcResult').innerHTML=`${q}غ = <strong>${c.toFixed(0)} kcal</strong><br>بروتين: ${p.toFixed(1)}غ · كربوهيدرات: ${car.toFixed(1)}غ · دهون: ${f.toFixed(1)}غ`};
-$('settingsBtn').onclick=()=>$('settingsWrap').classList.toggle('open');$('fontSize').onchange=e=>{document.documentElement.style.setProperty('--font-size',e.target.value+'px');localStorage.setItem('maida-font',e.target.value)};if(localStorage.getItem('maida-font')){$('fontSize').value=localStorage.getItem('maida-font');document.documentElement.style.setProperty('--font-size',localStorage.getItem('maida-font')+'px')}
-const translations={ar:{brand:'مائدة',explore:'استكشف الأطباق',shareNav:'أضف طبقاً',toolsNav:'الأدوات',settings:'الإعدادات',language:'اللغة',fontSize:'حجم الخط',addDish:'+ إضافة طبق',eyebrow:'مائدة مجتمعية',heroTitle:'الطعام يصبح ألذ عندما نتشاركه.',heroText:'اكتشف أطباقاً منزلية من مجتمعك، شارك وصفتك، قيّم أطباق الآخرين، واحسب قيمتها الغذائية بسهولة.',discover:'اكتشف الأطباق ↓',shareRecipe:'شارك وصفتك',note1:'محضر بحب ♡',note2:'شارك الطبق!',community:'من أطباق المجتمع',all:'الكل',dishes:'أطباق',desserts:'حلويات',fast:'أكلات سريعة',drinks:'مشروبات',formTitle:'أحضر طبقك إلى المائدة',formText:'أضف صورة طبقك من جهازك أو التقط صورة مباشرة بالكاميرا.',dishName:'اسم الطبق',category:'القسم',description:'وصف قصير',dishPhoto:'صورة الطبق',choosePhoto:'📁 اختر صورة',takePhoto:'📷 التقط صورة',quantity:'الكمية (غرام — 100 على الأقل)',calories:'السعرات لكل 100غ',protein:'البروتين لكل 100غ',carbs:'الكربوهيدرات لكل 100غ',fat:'الدهون لكل 100غ',fiber:'الألياف لكل 100غ',addToTable:'أضف الطبق إلى المائدة',cancel:'إلغاء التعديل',calculator:'🧮 آلة حاسبة غذائية',calculatorText:'أدخل القيم الموجودة لكل 100غ، ثم حدد الكمية المطلوبة.',desiredQuantity:'الكمية المطلوبة (غ)',calcCalories:'السعرات لكل 100غ',calculate:'احسب',developer:'المبرمج',contactText:'للتواصل والاقتراحات، يمكنكم مراسلة المبرمج عبر البريد الإلكتروني.',footer:'صُنع بحب لكل من يؤمن أن أفضل الوصفات هي التي نتشاركها.'},en:{brand:'Maida',explore:'Explore dishes',shareNav:'Add a dish',toolsNav:'Tools',settings:'Settings',language:'Language',fontSize:'Font size',addDish:'+ Add a dish',eyebrow:'A community table',heroTitle:'Good food is better when shared.',heroText:'Discover homemade dishes, share your recipe, rate dishes, and calculate nutrition with ease.',discover:'Discover dishes ↓',shareRecipe:'Share your recipe',note1:'Made with love ♡',note2:'Pass the plate!',community:'From the community',all:'All',dishes:'Dishes',desserts:'Desserts',fast:'Fast food',drinks:'Drinks',formTitle:'Bring your dish to the table',formText:'Upload a dish photo or take one directly with your camera.',dishName:'Dish name',category:'Category',description:'Short description',dishPhoto:'Dish photo',choosePhoto:'📁 Choose photo',takePhoto:'📷 Take photo',quantity:'Quantity (g — minimum 100)',calories:'Calories per 100g',protein:'Protein per 100g',carbs:'Carbs per 100g',fat:'Fat per 100g',fiber:'Fiber per 100g',addToTable:'Add dish to table',cancel:'Cancel editing',calculator:'🧮 Nutrition calculator',calculatorText:'Enter values per 100g, then choose the desired quantity.',desiredQuantity:'Desired quantity (g)',calcCalories:'Calories per 100g',calculate:'Calculate',developer:'Developer',contactText:'For contact and suggestions, email the developer.',footer:'Made with love for people who believe the best recipes are shared.'}};
-$('language').onchange=e=>{let lang=e.target.value,t=translations[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t[el.dataset.i18n]);localStorage.setItem('maida-lang',lang)};if(localStorage.getItem('maida-lang')){$('language').value=localStorage.getItem('maida-lang');$('language').dispatchEvent(new Event('change'))}render();
-</script>
-</body></html>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top"><span class="brand-mark">✦</span><span data-i18n="brand">مائدة</span></a>
+      <nav>
+        <a href="#dishes" data-i18n="navExplore">استكشف الأطباق</a>
+        <a href="#share" data-i18n="navAdd">أضف طبقاً</a>
+        <a href="#tools" data-i18n="navTools">الأدوات</a>
+      </nav>
+      <div class="header-actions">
+        <div class="settings-wrap" id="settingsWrap">
+          <button class="icon-button" id="settingsBtn" type="button" aria-label="الإعدادات">⚙</button>
+          <div class="settings-panel">
+            <h3 data-i18n="settingsTitle">الإعدادات</h3>
+            <label for="language" data-i18n="languageLabel">اللغة</label>
+            <select id="language">
+              <option value="ar">العربية</option>
+              <option value="en">English</option>
+            </select>
+            <label for="fontSize" data-i18n="fontSizeLabel">حجم الخط</label>
+            <select id="fontSize">
+              <option value="14">14px</option>
+              <option value="16" selected>16px</option>
+              <option value="18">18px</option>
+              <option value="20">20px</option>
+            </select>
+            <div class="small-actions">
+              <button type="button" id="exportBtn" data-i18n="exportData">تصدير البيانات</button>
+              <button type="button" id="importBtn" data-i18n="importData">استيراد البيانات</button>
+            </div>
+            <input id="importFile" type="file" accept="application/json" hidden />
+          </div>
+        </div>
+        <a class="button" href="#share" data-i18n="addDishBtn">+ إضافة طبق</a>
+      </div>
+    </header>
+
+    <section class="hero" id="top">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">مائدة مجتمعية</p>
+        <h1 data-i18n="heroTitle">الطعام يصبح ألذ عندما نتشاركه.</h1>
+        <p class="hero-copy" data-i18n="heroText">اكتشف أطباقاً منزلية من مجتمعك، شارك وصفاتك، قيم أطباق الآخرين، واحسب القيم الغذائية بسهولة.</p>
+        <div class="hero-buttons">
+          <a class="button" href="#dishes" data-i18n="discoverBtn">اكتشف الأطباق ↓</a>
+          <a class="button outline" href="#share" data-i18n="shareBtn">شارك وصفتك</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="blob"><div class="plate">🥗</div></div>
+        <div class="note" data-i18n="noteOne">محضر بحب ♡</div>
+        <div class="note bottom" data-i18n="noteTwo">شارك الطبق!</div>
+      </div>
+    </section>
+
+    <main>
+      <section id="dishes">
+        <div class="heading">
+          <div>
+            <h2 data-i18n="communityTitle">من أطباق المجتمع</h2>
+            <p id="dishCount">0 أطباق مشتركة</p>
+          </div>
+          <div class="filters" aria-label="فلترة حسب القسم">
+            <button class="filter active" data-category="all" data-i18n="filterAll">الكل</button>
+            <button class="filter" data-category="dishes" data-i18n="filterDishes">أطباق</button>
+            <button class="filter" data-category="desserts" data-i18n="filterDesserts">حلويات</button>
+            <button class="filter" data-category="fast" data-i18n="filterFast">أكلات سريعة</button>
+            <button class="filter" data-category="drinks" data-i18n="filterDrinks">مشروبات</button>
+          </div>
+        </div>
+        <div class="dish-grid" id="dishGrid"></div>
+      </section>
+
+      <section class="form-section" id="share">
+        <div class="form-head">
+          <div>
+            <h2 id="formTitle" data-i18n="formTitle">أحضر طبقك إلى المائدة</h2>
+            <p data-i18n="formText">أضف صورة طبقك من جهازك أو التقط صورة مباشرة من الكاميرا.</p>
+          </div>
+        </div>
+
+        <form class="form-grid" id="dishForm">
+          <div class="field">
+            <label for="dishName" data-i18n="dishName">اسم الطبق</label>
+            <input id="dishName" name="dishName" type="text" maxlength="60" required placeholder="مثال: كسكس بالخضار" />
+          </div>
+
+          <div class="field">
+            <label for="dishCategory" data-i18n="dishCategory">القسم</label>
+            <select id="dishCategory" name="dishCategory">
+              <option value="dishes" data-i18n="optionDishes">أطباق</option>
+              <option value="desserts" data-i18n="optionDesserts">حلويات</option>
+              <option value="fast" data-i18n="optionFast">أكلات سريعة</option>
+              <option value="drinks" data-i18n="optionDrinks">مشروبات</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="dishDescription" data-i18n="dishDescription">وصف قصير</label>
+            <textarea id="dishDescription" name="dishDescription" maxlength="180" required placeholder="ما الذي يجعل طبقك مميزاً؟"></textarea>
+          </div>
+
+          <div class="field full">
+            <label data-i18n="dishPhoto">صورة الطبق</label>
+            <div class="file-row">
+              <label class="file-button"><span data-i18n="choosePhoto">📁 اختر صورة</span><input id="photoInput" type="file" accept="image/*" /></label>
+              <label class="file-button"><span data-i18n="takePhoto">📷 التقط صورة</span><input id="cameraInput" type="file" accept="image/*" capture="environment" /></label>
+              <input id="imageUrl" type="url" placeholder="أو ضع رابط الصورة" />
+            </div>
+            <img class="preview" id="preview" alt="معاينة الصورة" />
+          </div>
+
+          <div class="field">
+            <label for="dishQuantity" data-i18n="dishQuantity">الكمية (غرام)</label>
+            <input id="dishQuantity" name="dishQuantity" type="number" min="100" value="100" required />
+          </div>
+
+          <div class="field">
+            <label for="dishCalories" data-i18n="dishCalories">السعرات لكل 100غ</label>
+            <input id="dishCalories" name="dishCalories" type="number" min="0" step="0.1" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="dishProtein" data-i18n="dishProtein">البروتين لكل 100غ</label>
+            <input id="dishProtein" name="dishProtein" type="number" min="0" step="0.1" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="dishCarbs" data-i18n="dishCarbs">الكربوهيدرات لكل 100غ</label>
+            <input id="dishCarbs" name="dishCarbs" type="number" min="0" step="0.1" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="dishFat" data-i18n="dishFat">الدهون لكل 100غ</label>
+            <input id="dishFat" name="dishFat" type="number" min="0" step="0.1" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="dishFiber" data-i18n="dishFiber">الألياف لكل 100غ</label>
+            <input id="dishFiber" name="dishFiber" type="number" min="0" step="0.1" value="0" />
+          </div>
+
+          <div class="field full">
+            <div class="submit-area">
+              <button class="button light" type="submit" id="submitBtn" data-i18n="submitBtn">أضف الطبق إلى المائدة</button>
+              <button class="cancel-edit" type="button" id="cancelEdit" data-i18n="cancelEdit">إلغاء التعديل</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="tools" id="tools">
+        <div class="tool">
+          <h3 data-i18n="calculatorTitle">🧮 آلة حاسبة غذائية</h3>
+          <p data-i18n="calculatorText">أدخل القيم الموجودة لكل 100غ، ثم حدد الكمية المطلوبة.</p>
+          <div class="calc-grid">
+            <div class="field">
+              <label for="calcQty" data-i18n="calcQty">الكمية المطلوبة (غ)</label>
+              <input id="calcQty" type="number" min="100" value="100" />
+            </div>
+            <div class="field">
+              <label for="calcCal" data-i18n="calcCal">السعرات لكل 100غ</label>
+              <input id="calcCal" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="calcProtein" data-i18n="calcProtein">البروتين</label>
+              <input id="calcProtein" type="number" min="0" step="0.1" value="0" />
+            </div>
+            <div class="field">
+              <label for="calcCarbs" data-i18n="calcCarbs">الكربوهيدرات</label>
+              <input id="calcCarbs" type="number" min="0" step="0.1" value="0" />
+            </div>
+            <div class="field">
+              <label for="calcFat" data-i18n="calcFat">الدهون</label>
+              <input id="calcFat" type="number" min="0" step="0.1" value="0" />
+            </div>
+            <div class="field">
+              <label for="calcFiber" data-i18n="calcFiber">الألياف</label>
+              <input id="calcFiber" type="number" min="0" step="0.1" value="0" />
+            </div>
+            <button class="button" type="button" id="calcBtn" data-i18n="calcBtn">احسب</button>
+            <div class="calc-result" id="calcResult">—</div>
+          </div>
+        </div>
+
+        <div class="tool about-box">
+          <h3 data-i18n="developerTitle">المبرمج</h3>
+          <p><strong>BOABCA AZEDDIN</strong></p>
+          <p><a href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></p>
+          <p data-i18n="developerText">للتواصل والاقتراحات، يمكنك مراسلة المبرمج عبر البريد الإلكتروني.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer data-i18n="footerText">صُنع بحب لكل من يؤمن أن أفضل الوصفات هي التي نتشاركها.</footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      dishes: 'maida-dishes-v2',
+      language: 'maida-language',
+      font: 'maida-font-size'
+    };
+
+    const fallbackImage = 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80';
+
+    const starterDishes = [
+      {
+        id: 'starter-1',
+        name: 'سلطة الحديقة',
+        description: 'خضروات طازجة مع جبن الفيتا وتتبيلة الليمون.',
+        category: 'dishes',
+        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
+        ratings: [5, 5, 4],
+        quantity: 100,
+        nutrition: { calories: 120, protein: 5, carbs: 14, fat: 6, fiber: 4 }
+      },
+      {
+        id: 'starter-2',
+        name: 'فطائر التوت',
+        description: 'فطائر هشة مع التوت الطازج والعسل.',
+        category: 'desserts',
+        image: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=900&q=80',
+        ratings: [5, 4, 5],
+        quantity: 100,
+        nutrition: { calories: 230, protein: 6, carbs: 35, fat: 8, fiber: 2 }
+      },
+      {
+        id: 'starter-3',
+        name: 'عصير البرتقال',
+        description: 'عصير طبيعي منعش غني بفيتامين C.',
+        category: 'drinks',
+        image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&q=80',
+        ratings: [4, 5],
+        quantity: 100,
+        nutrition: { calories: 45, protein: 0.7, carbs: 10, fat: 0.2, fiber: 0.2 }
+      }
+    ];
+
+    const translations = {
+      ar: {
+        brand: 'مائدة',
+        navExplore: 'استكشف الأطباق',
+        navAdd: 'أضف طبقاً',
+        navTools: 'الأدوات',
+        settingsTitle: 'الإعدادات',
+        languageLabel: 'اللغة',
+        fontSizeLabel: 'حجم الخط',
+        addDishBtn: '+ إضافة طبق',
+        eyebrow: 'مائدة مجتمعية',
+        heroTitle: 'الطعام يصبح ألذ عندما نتشاركه.',
+        heroText: 'اكتشف أطباقاً منزلية من مجتمعك، شارك وصفاتك، قيم أطباق الآخرين، واحسب القيم الغذائية بسهولة.',
+        discoverBtn: 'اكتشف الأطباق ↓',
+        shareBtn: 'شارك وصفتك',
+        noteOne: 'محضر بحب ♡',
+        noteTwo: 'شارك الطبق!',
+        communityTitle: 'من أطباق المجتمع',
+        filterAll: 'الكل',
+        filterDishes: 'أطباق',
+        filterDesserts: 'حلويات',
+        filterFast: 'أكلات سريعة',
+        filterDrinks: 'مشروبات',
+        formTitle: 'أحضر طبقك إلى المائدة',
+        formText: 'أضف صورة طبقك من جهازك أو التقط صورة مباشرة من الكاميرا.',
+        dishName: 'اسم الطبق',
+        dishCategory: 'القسم',
+        optionDishes: 'أطباق',
+        optionDesserts: 'حلويات',
+        optionFast: 'أكلات سريعة',
+        optionDrinks: 'مشروبات',
+        dishDescription: 'وصف قصير',
+        dishPhoto: 'صورة الطبق',
+        choosePhoto: '📁 اختر صورة',
+        takePhoto: '📷 التقط صورة',
+        dishQuantity: 'الكمية (غرام)',
+        dishCalories: 'السعرات لكل 100غ',
+        dishProtein: 'البروتين لكل 100غ',
+        dishCarbs: 'الكربوهيدرات لكل 100غ',
+        dishFat: 'الدهون لكل 100غ',
+        dishFiber: 'الألياف لكل 100غ',
+        submitBtn: 'أضف الطبق إلى المائدة',
+        cancelEdit: 'إلغاء التعديل',
+        calculatorTitle: '🧮 آلة حاسبة غذائية',
+        calculatorText: 'أدخل القيم الموجودة لكل 100غ، ثم حدد الكمية المطلوبة.',
+        calcQty: 'الكمية المطلوبة (غ)',
+        calcCal: 'السعرات لكل 100غ',
+        calcProtein: 'البروتين',
+        calcCarbs: 'الكربوهيدرات',
+        calcFat: 'الدهون',
+        calcFiber: 'الألياف',
+        calcBtn: 'احسب',
+        developerTitle: 'المبرمج',
+        developerText: 'للتواصل والاقتراحات، يمكنك مراسلة المبرمج عبر البريد الإلكتروني.',
+        footerText: 'صُنع بحب لكل من يؤمن أن أفضل الوصفات هي التي نتشاركها.',
+        exportData: 'تصدير البيانات',
+        importData: 'استيراد البيانات'
+      },
+      en: {
+        brand: 'Maida',
+        navExplore: 'Explore dishes',
+        navAdd: 'Add a dish',
+        navTools: 'Tools',
+        settingsTitle: 'Settings',
+        languageLabel: 'Language',
+        fontSizeLabel: 'Font size',
+        addDishBtn: '+ Add a dish',
+        eyebrow: 'A community table',
+        heroTitle: 'Good food is better when shared.',
+        heroText: 'Discover homemade dishes, share your recipes, rate the dishes, and calculate nutrition with ease.',
+        discoverBtn: 'Discover dishes ↓',
+        shareBtn: 'Share your recipe',
+        noteOne: 'Made with love ♡',
+        noteTwo: 'Pass the plate!',
+        communityTitle: 'From the community',
+        filterAll: 'All',
+        filterDishes: 'Dishes',
+        filterDesserts: 'Desserts',
+        filterFast: 'Fast food',
+        filterDrinks: 'Drinks',
+        formTitle: 'Bring your dish to the table',
+        formText: 'Upload your dish photo from your device or take one directly from the camera.',
+        dishName: 'Dish name',
+        dishCategory: 'Category',
+        optionDishes: 'Dishes',
+        optionDesserts: 'Desserts',
+        optionFast: 'Fast food',
+        optionDrinks: 'Drinks',
+        dishDescription: 'Short description',
+        dishPhoto: 'Dish photo',
+        choosePhoto: '📁 Choose photo',
+        takePhoto: '📷 Take photo',
+        dishQuantity: 'Quantity (grams)',
+        dishCalories: 'Calories per 100g',
+        dishProtein: 'Protein per 100g',
+        dishCarbs: 'Carbs per 100g',
+        dishFat: 'Fat per 100g',
+        dishFiber: 'Fiber per 100g',
+        submitBtn: 'Add dish to the table',
+        cancelEdit: 'Cancel edit',
+        calculatorTitle: '🧮 Nutrition calculator',
+        calculatorText: 'Enter the values per 100g, then choose the desired quantity.',
+        calcQty: 'Desired quantity (g)',
+        calcCal: 'Calories per 100g',
+        calcProtein: 'Protein',
+        calcCarbs: 'Carbs',
+        calcFat: 'Fat',
+        calcFiber: 'Fiber',
+        calcBtn: 'Calculate',
+        developerTitle: 'Developer',
+        developerText: 'For contact and suggestions, you can email the developer.',
+        footerText: 'Made with love for everyone who believes the best recipes are shared.',
+        exportData: 'Export data',
+        importData: 'Import data'
+      }
+    };
+
+    let dishes = readDishes();
+    let currentFilter = 'all';
+    let editingId = null;
+    let selectedImage = '';
+    let currentLanguage = localStorage.getItem(STORAGE_KEYS.language) || 'ar';
+
+    const dishGrid = document.getElementById('dishGrid');
+    const toastEl = document.getElementById('toast');
+    const dishForm = document.getElementById('dishForm');
+    const settingsWrap = document.getElementById('settingsWrap');
+    const languageSelect = document.getElementById('language');
+    const fontSizeSelect = document.getElementById('fontSize');
+    const importFileInput = document.getElementById('importFile');
+
+    function readDishes() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.dishes));
+        return Array.isArray(saved) && saved.length ? saved : starterDishes;
+      } catch (e) {
+        return starterDishes;
+      }
+    }
+
+    function saveDishes() {
+      localStorage.setItem(STORAGE_KEYS.dishes, JSON.stringify(dishes));
+    }
+
+    function safeText(str) {
+      return String(str ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[char]));
+    }
+
+    function formatCategory(value) {
+      const map = {
+        dishes: 'أطباق',
+        desserts: 'حلويات',
+        fast: 'أكلات سريعة',
+        drinks: 'مشروبات'
+      };
+      return currentLanguage === 'en'
+        ? { dishes: 'Dishes', desserts: 'Desserts', fast: 'Fast food', drinks: 'Drinks' }[value]
+        : map[value] || value;
+    }
+
+    function average(numbers) {
+      if (!Array.isArray(numbers) || !numbers.length) return 0;
+      return numbers.reduce((sum, x) => sum + Number(x || 0), 0) / numbers.length;
+    }
+
+    function getNutritionData(dish) {
+      const n = dish.nutrition || {};
+      return {
+        calories: Number(n.calories || 0),
+        protein: Number(n.protein || 0),
+        carbs: Number(n.carbs || 0),
+        fat: Number(n.fat || 0),
+        fiber: Number(n.fiber || 0)
+      };
+    }
+
+    function render() {
+      const visible = dishes.filter(dish => currentFilter === 'all' || dish.category === currentFilter);
+      const countText = currentLanguage === 'en'
+        ? `${dishes.length} dishes shared with the community`
+        : `${dishes.length} طبقاً مشتركاً في المجتمع`;
+      document.getElementById('dishCount').textContent = countText;
+
+      if (!visible.length) {
+        dishGrid.innerHTML = '<div class="empty"><strong>' + (currentLanguage === 'en' ? 'No dishes yet.' : 'لا توجد أطباق بعد.') + '</strong>' + (currentLanguage === 'en' ? 'Be the first to add a dish.' : 'كن أول من يضيف طبقاً.') + '</div>';
+        return;
+      }
+
+      dishGrid.innerHTML = visible.map(dish => {
+        const n = getNutritionData(dish);
+        const avgRating = average(dish.ratings || []);
+        const ratingCount = (dish.ratings || []).length;
+        const displayStars = Array.from({ length: 5 }, (_, i) => ((i + 1) <= Math.round(avgRating) ? '★' : '☆')).join('');
+
+        return `
+          <article class="card">
+            <img class="dish-image" src="${safeText(dish.image || fallbackImage)}" alt="${safeText(dish.name)}" loading="lazy" onerror="this.src='${fallbackImage}'" />
+            <div class="card-body">
+              <span class="tag">${safeText(formatCategory(dish.category))}</span>
+              <h3>${safeText(dish.name)}</h3>
+              <p class="desc">${safeText(dish.description)}</p>
+              <div class="nutrition">
+                <span><strong>${Number(n.calories || 0).toFixed(0)}</strong> kcal</span>
+                <span><strong>${Number(n.protein || 0).toFixed(1)}</strong> ${currentLanguage === 'en' ? 'Protein' : 'بروتين'}</span>
+                <span><strong>${Number(n.carbs || 0).toFixed(1)}</strong> ${currentLanguage === 'en' ? 'Carbs' : 'كربوهيدرات'}</span>
+                <span><strong>${Number(n.fat || 0).toFixed(1)}</strong> ${currentLanguage === 'en' ? 'Fat' : 'دهون'}</span>
+              </div>
+              <div class="rating">
+                <div>
+                  <span class="stars">${displayStars}</span>
+                  <small>${avgRating ? avgRating.toFixed(1) : '—'} (${ratingCount})</small>
+                  <div class="rate-buttons" data-id="${dish.id}">
+                    ${[1,2,3,4,5].map(v => `<button class="rate-star" type="button" data-score="${v}" aria-label="Rate ${v}">★</button>`).join('')}
+                  </div>
+                </div>
+                <small>${currentLanguage === 'en' ? 'Rate it' : 'قيّم'}</small>
+              </div>
+              <div class="actions">
+                <button type="button" class="text-button edit" data-id="${dish.id}">${currentLanguage === 'en' ? 'Edit' : 'تعديل'}</button>
+                <button type="button" class="text-button delete" data-id="${dish.id}">${currentLanguage === 'en' ? 'Delete' : 'حذف'}</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.rate-star').forEach(button => {
+        button.addEventListener('click', () => rateDish(button.closest('.rate-buttons').dataset.id, Number(button.dataset.score)));
+      });
+
+      document.querySelectorAll('.edit').forEach(button => {
+        button.addEventListener('click', () => startEdit(button.dataset.id));
+      });
+
+      document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', () => deleteDish(button.dataset.id));
+      });
+    }
+
+    function rateDish(dishId, score) {
+      const dish = dishes.find(d => d.id === dishId);
+      if (!dish) return;
+      dish.ratings = Array.isArray(dish.ratings) ? dish.ratings : [];
+      dish.ratings.push(score);
+      saveDishes();
+      render();
+      showToast(currentLanguage === 'en' ? 'Thanks for rating!' : 'شكراً على تقييمك!');
+    }
+
+    function startEdit(id) {
+      const dish = dishes.find(d => d.id === id);
+      if (!dish) return;
+      editingId = id;
+      dishForm.classList.add('editing');
+      document.getElementById('formTitle').textContent = currentLanguage === 'en' ? 'Edit the dish' : 'تعديل الطبق';
+      document.getElementById('submitBtn').textContent = currentLanguage === 'en' ? 'Save changes' : 'حفظ التعديلات';
+      document.getElementById('dishName').value = dish.name || '';
+      document.getElementById('dishCategory').value = dish.category || 'dishes';
+      document.getElementById('dishDescription').value = dish.description || '';
+      document.getElementById('imageUrl').value = dish.image && !dish.image.startsWith('data:') ? dish.image : '';
+      selectedImage = dish.image && dish.image.startsWith('data:') ? dish.image : '';
+      if (selectedImage) {
+        document.getElementById('preview').src = selectedImage;
+        document.getElementById('preview').style.display = 'block';
+      } else {
+        document.getElementById('preview').style.display = 'none';
+      }
+      fillNutrition(dish.nutrition || {});
+      document.getElementById('dishQuantity').value = dish.quantity || 100;
+      document.getElementById('share').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('dishName').focus();
+    }
+
+    function resetForm() {
+      editingId = null;
+      dishForm.reset();
+      dishForm.classList.remove('editing');
+      document.getElementById('formTitle').textContent = currentLanguage === 'en' ? 'Bring your dish to the table' : 'أحضر طبقك إلى المائدة';
+      document.getElementById('submitBtn').textContent = currentLanguage === 'en' ? 'Add dish to the table' : 'أضف الطبق إلى المائدة';
+      document.getElementById('dishQuantity').value = 100;
+      document.getElementById('dishCalories').value = 0;
+      document.getElementById('dishProtein').value = 0;
+      document.getElementById('dishCarbs').value = 0;
+      document.getElementById('dishFat').value = 0;
+      document.getElementById('dishFiber').value = 0;
+      document.getElementById('imageUrl').value = '';
+      selectedImage = '';
+      document.getElementById('preview').style.display = 'none';
+    }
+
+    function deleteDish(id) {
+      const dish = dishes.find(d => d.id === id);
+      if (!dish) return;
+      const confirmText = currentLanguage === 'en'
+        ? `Delete "${dish.name}" from the table?`
+        : `هل تريد حذف "${dish.name}" من المائدة؟`;
+      if (!confirm(confirmText)) return;
+      dishes = dishes.filter(d => d.id !== id);
+      saveDishes();
+      render();
+      showToast(currentLanguage === 'en' ? 'Dish deleted.' : 'تم حذف الطبق.');
+    }
+
+    function fillNutrition(data) {
+      const n = data || {};
+      document.getElementById('dishCalories').value = Number(n.calories || 0);
+      document.getElementById('dishProtein').value = Number(n.protein || 0);
+      document.getElementById('dishCarbs').value = Number(n.carbs || 0);
+      document.getElementById('dishFat').value = Number(n.fat || 0);
+      document.getElementById('dishFiber').value = Number(n.fiber || 0);
+    }
+
+    function buildDishFromForm() {
+      const name = document.getElementById('dishName').value.trim();
+      const description = document.getElementById('dishDescription').value.trim();
+      const category = document.getElementById('dishCategory').value;
+      const image = selectedImage || document.getElementById('imageUrl').value.trim() || fallbackImage;
+      const quantity = Math.max(100, Number(document.getElementById('dishQuantity').value || 100));
+      const nutrition = {
+        calories: Number(document.getElementById('dishCalories').value || 0),
+        protein: Number(document.getElementById('dishProtein').value || 0),
+        carbs: Number(document.getElementById('dishCarbs').value || 0),
+        fat: Number(document.getElementById('dishFat').value || 0),
+        fiber: Number(document.getElementById('dishFiber').value || 0)
+      };
+
+      return { name, description, category, image, quantity, nutrition };
+    }
+
+    dishForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const dishData = buildDishFromForm();
+      if (!dishData.name || !dishData.description) return;
+
+      if (editingId) {
+        const target = dishes.find(d => d.id === editingId);
+        if (target) {
+          Object.assign(target, dishData, { ratings: target.ratings || [] });
+          showToast(currentLanguage === 'en' ? 'Dish updated.' : 'تم تحديث الطبق.');
+        }
+      } else {
+        dishes.unshift({
+          id: 'dish-' + Date.now(),
+          ...dishData,
+          ratings: []
+        });
+        showToast(currentLanguage === 'en' ? 'Dish added to the table!' : 'تمت إضافة الطبق إلى المائدة!');
+      }
+
+      saveDishes();
+      render();
+      resetForm();
+      document.getElementById('dishes').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toastEl.classList.remove('show'), 2500);
+    }
+
+    function attachPhoto(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function () {
+        selectedImage = reader.result;
+        const preview = document.getElementById('preview');
+        preview.src = selectedImage;
+        preview.style.display = 'block';
+        document.getElementById('imageUrl').value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('photoInput').addEventListener('change', function (e) {
+      attachPhoto(e.target.files[0]);
+      this.value = '';
+    });
+
+    document.getElementById('cameraInput').addEventListener('change', function (e) {
+      attachPhoto(e.target.files[0]);
+      this.value = '';
+    });
+
+    document.getElementById('cancelEdit').addEventListener('click', resetForm);
+
+    document.querySelectorAll('.filter').forEach(button => {
+      button.addEventListener('click', function () {
+        currentFilter = this.dataset.category;
+        document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === this));
+        render();
+      });
+    });
+
+    document.getElementById('settingsBtn').addEventListener('click', function () {
+      settingsWrap.classList.toggle('open');
+    });
+
+    function applyLanguage(lang) {
+      currentLanguage = lang;
+      const t = translations[lang] || translations.ar;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (t[key]) el.textContent = t[key];
+      });
+      document.getElementById('language').value = lang;
+      localStorage.setItem(STORAGE_KEYS.language, lang);
+      render();
+      if (editingId) {
+        const editDish = dishes.find(d => d.id === editingId);
+        if (editDish) {
+          document.getElementById('formTitle').textContent = currentLanguage === 'en' ? 'Edit the dish' : 'تعديل الطبق';
+          document.getElementById('submitBtn').textContent = currentLanguage === 'en' ? 'Save changes' : 'حفظ التعديلات';
+        }
+      } else {
+        document.getElementById('formTitle').textContent = currentLanguage === 'en' ? 'Bring your dish to the table' : 'أحضر طبقك إلى المائدة';
+        document.getElementById('submitBtn').textContent = currentLanguage === 'en' ? 'Add dish to the table' : 'أضف الطبق إلى المائدة';
+      }
+      document.getElementById('cancelEdit').textContent = currentLanguage === 'en' ? 'Cancel edit' : 'إلغاء التعديل';
+    }
+
+    languageSelect.addEventListener('change', function () {
+      applyLanguage(this.value);
+    });
+
+    fontSizeSelect.addEventListener('change', function () {
+      const size = this.value;
+      document.documentElement.style.setProperty('--font-size', `${size}px`);
+      localStorage.setItem(STORAGE_KEYS.font, size);
+    });
+
+    const savedFontSize = localStorage.getItem(STORAGE_KEYS.font) || '16';
+    document.documentElement.style.setProperty('--font-size', `${savedFontSize}px`);
+    fontSizeSelect.value = savedFontSize;
+
+    const savedLanguage = localStorage.getItem(STORAGE_KEYS.language) || 'ar';
+    languageSelect.value = savedLanguage;
+    applyLanguage(savedLanguage);
+
+    document.getElementById('calcBtn').addEventListener('click', function () {
+      const qty = Math.max(100, Number(document.getElementById('calcQty').value || 0));
+      const cal = Number(document.getElementById('calcCal').value || 0);
+      const protein = Number(document.getElementById('calcProtein').value || 0);
+      const carbs = Number(document.getElementById('calcCarbs').value || 0);
+      const fat = Number(document.getElementById('calcFat').value || 0);
+      const fiber = Number(document.getElementById('calcFiber').value || 0);
+      const factor = qty / 100;
+
+      const result = currentLanguage === 'en'
+        ? `Total for ${qty}g: ${ (cal * factor).toFixed(0) } kcal, Protein: ${ (protein * factor).toFixed(1) }g, Carbs: ${ (carbs * factor).toFixed(1) }g, Fat: ${ (fat * factor).toFixed(1) }g, Fiber: ${ (fiber * factor).toFixed(1) }g`
+        : `المجموع لـ ${qty}غ: ${ (cal * factor).toFixed(0) } سعرة، بروتين: ${ (protein * factor).toFixed(1) }غ، كربوهيدرات: ${ (carbs * factor).toFixed(1) }غ، دهون: ${ (fat * factor).toFixed(1) }غ، ألياف: ${ (fiber * factor).toFixed(1) }غ`;
+
+      document.getElementById('calcResult').textContent = result;
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', function () {
+      const content = JSON.stringify(dishes, null, 2);
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'maida-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(currentLanguage === 'en' ? 'Data exported.' : 'تم تصدير البيانات.');
+    });
+
+    document.getElementById('importBtn').addEventListener('click', function () {
+      importFileInput.click();
+    });
+
+    importFileInput.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function () {
+        try {
+          const data = JSON.parse(reader.result);
+          if (!Array.isArray(data)) throw new Error('Invalid data');
+          dishes = data.map((item, index) => ({
+            id: item.id || `import-${Date.now()}-${index}`,
+            name: item.name || 'Dish',
+            description: item.description || '',
+            category: item.category || 'dishes',
+            image: item.image || fallbackImage,
+            ratings: Array.isArray(item.ratings) ? item.ratings : [],
+            quantity: Math.max(100, Number(item.quantity || 100)),
+            nutrition: item.nutrition || { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
+          }));
+          saveDishes();
+          render();
+          showToast(currentLanguage === 'en' ? 'Data imported successfully.' : 'تم استيراد البيانات بنجاح.');
+        } catch (error) {
+          showToast(currentLanguage === 'en' ? 'The selected file is invalid.' : 'الملف المحدد غير صالح.');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('settingsBtn').addEventListener('click', function (event) {
+      event.stopPropagation();
+    });
+    document.addEventListener('click', function (event) {
+      if (!settingsWrap.contains(event.target)) settingsWrap.classList.remove('open');
+    });
+
+    render();
+  </script>
+</body>
+</html>
