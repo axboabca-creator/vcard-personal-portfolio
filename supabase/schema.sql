@@ -1,47 +1,50 @@
+-- Shared dishes and ratings for the Maida community app.
 create extension if not exists pgcrypto;
 
-create table if not exists public.recipes (
+create table if not exists public.dishes (
   id uuid primary key default gen_random_uuid(),
-  owner_id uuid not null references auth.users(id) on delete cascade,
-  title text not null check (char_length(title) between 1 and 160),
-  category text not null,
-  prep_time text not null default '',
+  name text not null check (char_length(name) between 1 and 120),
+  category text not null check (category in ('dishes', 'desserts', 'fast', 'drinks')),
+  description text not null default '',
   image_url text,
-  ingredients jsonb not null default '[]'::jsonb,
-  steps jsonb not null default '[]'::jsonb,
+  quantity integer not null default 100 check (quantity >= 100),
+  calories numeric not null default 0,
+  protein numeric not null default 0,
+  carbs numeric not null default 0,
+  fat numeric not null default 0,
+  fiber numeric not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.ratings (
+create table if not exists public.dish_ratings (
   id uuid primary key default gen_random_uuid(),
-  recipe_id uuid not null references public.recipes(id) on delete cascade,
-  user_id uuid not null references auth.users(id) on delete cascade,
+  dish_id uuid not null references public.dishes(id) on delete cascade,
+  voter_id text not null,
   value smallint not null check (value between 1 and 5),
   created_at timestamptz not null default now(),
-  unique (recipe_id, user_id)
+  unique (dish_id, voter_id)
 );
 
-alter table public.recipes enable row level security;
-alter table public.ratings enable row level security;
+alter table public.dishes enable row level security;
+alter table public.dish_ratings enable row level security;
 
-drop policy if exists "Anyone can read recipes" on public.recipes;
-create policy "Anyone can read recipes" on public.recipes for select using (true);
-drop policy if exists "Users create their own recipes" on public.recipes;
-create policy "Users create their own recipes" on public.recipes for insert with check (auth.uid() = owner_id);
-drop policy if exists "Owners update their recipes" on public.recipes;
-create policy "Owners update their recipes" on public.recipes for update using (auth.uid() = owner_id) with check (auth.uid() = owner_id);
-drop policy if exists "Owners delete their recipes" on public.recipes;
-create policy "Owners delete their recipes" on public.recipes for delete using (auth.uid() = owner_id);
+drop policy if exists "Anyone can read dishes" on public.dishes;
+create policy "Anyone can read dishes" on public.dishes for select using (true);
+drop policy if exists "Anyone can add dishes" on public.dishes;
+create policy "Anyone can add dishes" on public.dishes for insert with check (true);
+drop policy if exists "Anyone can update dishes" on public.dishes;
+create policy "Anyone can update dishes" on public.dishes for update using (true) with check (true);
+drop policy if exists "Anyone can delete dishes" on public.dishes;
+create policy "Anyone can delete dishes" on public.dishes for delete using (true);
 
-drop policy if exists "Anyone can read ratings" on public.ratings;
-create policy "Anyone can read ratings" on public.ratings for select using (true);
-drop policy if exists "Users create their own ratings" on public.ratings;
-create policy "Users create their own ratings" on public.ratings for insert with check (auth.uid() = user_id);
-drop policy if exists "Users update their own ratings" on public.ratings;
-create policy "Users update their own ratings" on public.ratings for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "Anyone can read dish ratings" on public.dish_ratings;
+create policy "Anyone can read dish ratings" on public.dish_ratings for select using (true);
+drop policy if exists "Anyone can rate dishes" on public.dish_ratings;
+create policy "Anyone can rate dishes" on public.dish_ratings for insert with check (true);
+drop policy if exists "Anyone can change a rating" on public.dish_ratings;
+create policy "Anyone can change a rating" on public.dish_ratings for update using (true) with check (true);
 
-after insert on public.recipes;
-
--- In Supabase Storage, create a public bucket named recipe-images.
--- Use the authenticated user's id as the first folder in each object path.
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on public.dishes to anon, authenticated;
+grant select, insert, update on public.dish_ratings to anon, authenticated;
