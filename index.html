@@ -1,117 +1,33 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="مائدة — منصة مجتمعية لمشاركة الأطباق وتقييمها." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="مائدة — منصة مجتمعية لمشاركة الأطباق وتقييمها">
   <title>مائدة | مشاركة الأطباق</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--size:16px}body{font-size:var(--size);font-family:Tahoma,Arial,sans-serif}.card{transition:.2s}.card:hover{transform:translateY(-4px);box-shadow:0 16px 30px #17493618}.stars button{font-size:1.35rem;color:#d6d6c8}.stars button:hover,.stars button.active{color:#e9ae3d}.settings{display:none}.settings.open{display:block}
+  </style>
 </head>
 <body class="min-h-screen bg-amber-50 text-slate-800">
   <div class="mx-auto max-w-6xl px-4 py-5 sm:px-8 sm:py-8">
     <header class="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-amber-100 bg-white p-5 shadow-sm sm:p-7">
-      <div><h1 class="text-3xl font-black tracking-tight text-emerald-900">🍽️ مائدة</h1><p class="mt-1 text-slate-500">شارك أطباقك، واكتشف أطباق المجتمع</p></div>
-      <div class="flex items-center gap-2"><span id="connectionStatus" class="rounded-full bg-amber-100 px-3 py-2 text-xs font-bold text-amber-800">جار الاتصال...</span><a href="#add" class="rounded-full bg-emerald-800 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-900">+ أضف طبقاً</a></div>
+      <div><h1 class="text-3xl font-black text-emerald-900">🍽️ <span data-t="brand">مائدة</span></h1><p class="mt-1 text-slate-500" data-t="tagline">شارك أطباقك واكتشف أطباق المجتمع</p></div>
+      <div class="flex items-center gap-2"><div class="relative"><button id="settingsBtn" class="rounded-full bg-emerald-100 px-4 py-2 font-bold text-emerald-900">⚙ <span data-t="settings">الإعدادات</span></button><div id="settings" class="settings absolute left-0 top-12 z-20 w-64 rounded-2xl border bg-white p-4 shadow-xl"><h2 class="mb-3 font-black text-emerald-900" data-t="settings">الإعدادات</h2><label class="mb-1 block text-xs font-bold" data-t="language">اللغة</label><select id="language" class="mb-3 w-full rounded-lg border p-2"><option value="ar">العربية</option><option value="en">English</option></select><label class="mb-1 block text-xs font-bold" data-t="fontSize">حجم الخط</label><select id="fontSize" class="w-full rounded-lg border p-2"><option value="14">صغير</option><option value="16">متوسط</option><option value="18">كبير</option><option value="20">كبير جداً</option></select><hr class="my-3"><p class="text-xs text-slate-500" data-t="developer">المبرمج</p><strong class="text-emerald-800">BOABCA AZEDDIN</strong><a class="mt-1 block text-xs text-emerald-700" href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></div></div><a href="#add" class="rounded-full bg-emerald-800 px-4 py-2 font-bold text-white" data-t="add">+ إضافة طبق</a></div>
     </header>
 
-    <section id="add" class="mb-9 rounded-3xl border border-amber-100 bg-white p-5 shadow-sm sm:p-7">
-      <h2 id="formTitle" class="mb-5 text-2xl font-black text-emerald-800">أضف طبقك للمجتمع</h2>
-      <form id="dishForm" class="grid gap-4 sm:grid-cols-2">
-        <input id="dishName" required maxlength="120" placeholder="اسم الطبق" class="rounded-xl border border-slate-200 p-3 outline-none focus:ring-2 focus:ring-emerald-500" />
-        <select id="dishCategory" class="rounded-xl border border-slate-200 p-3 outline-none focus:ring-2 focus:ring-emerald-500"><option value="dishes">أطباق</option><option value="desserts">حلويات</option><option value="fast">أكلات سريعة</option><option value="drinks">مشروبات</option></select>
-        <input id="dishImage" type="url" placeholder="رابط صورة طبقك (URL)" class="rounded-xl border border-slate-200 p-3 outline-none focus:ring-2 focus:ring-emerald-500 sm:col-span-2" />
-        <textarea id="dishDescription" required maxlength="600" rows="3" placeholder="وصف الطبق وطريقة تحضيره" class="rounded-xl border border-slate-200 p-3 outline-none focus:ring-2 focus:ring-emerald-500 sm:col-span-2"></textarea>
-        <div><label class="mb-1 block text-xs font-bold text-slate-600">الكمية بالجرام (100 على الأقل)</label><input id="quantity" type="number" min="100" value="100" class="w-full rounded-xl border border-slate-200 p-3" /></div>
-        <div><label class="mb-1 block text-xs font-bold text-slate-600">السعرات لكل 100غ</label><input id="calories" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border border-slate-200 p-3" /></div>
-        <div><label class="mb-1 block text-xs font-bold text-slate-600">البروتين لكل 100غ</label><input id="protein" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border border-slate-200 p-3" /></div>
-        <div><label class="mb-1 block text-xs font-bold text-slate-600">الكربوهيدرات لكل 100غ</label><input id="carbs" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border border-slate-200 p-3" /></div>
-        <div><label class="mb-1 block text-xs font-bold text-slate-600">الدهون لكل 100غ</label><input id="fat" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border border-slate-200 p-3" /></div>
-        <div><label class="mb-1 block text-xs font-bold text-slate-600">الألياف لكل 100غ</label><input id="fiber" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border border-slate-200 p-3" /></div>
-        <div class="flex flex-wrap gap-3 sm:col-span-2"><button id="submitButton" type="submit" class="rounded-xl bg-emerald-700 px-6 py-3 font-black text-white hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60">نشر الطبق للجميع</button><button id="cancelButton" type="button" class="hidden rounded-xl px-5 py-3 font-bold text-slate-500 hover:bg-slate-100">إلغاء التعديل</button></div>
-      </form>
-      <p class="mt-3 text-xs text-slate-500">ملاحظة: لمشاركة صورة مع الجميع، استخدم رابط صورة عام. الصور الموجودة في جهازك لا يمكن للزوار رؤيتها إلا بعد رفعها إلى خدمة تخزين عامة.</p>
-    </section>
+    <section id="add" class="mb-9 rounded-3xl border border-amber-100 bg-white p-5 shadow-sm sm:p-7"><h2 class="mb-5 text-2xl font-black text-emerald-800" data-t="addTitle">أضف طبقك للمجتمع</h2><form id="form" class="grid gap-4 sm:grid-cols-2"><input id="name" required maxlength="120" placeholder="اسم الطبق" class="rounded-xl border p-3"><select id="category" class="rounded-xl border p-3"><option value="dishes">أطباق</option><option value="desserts">حلويات</option><option value="fast">أكلات سريعة</option><option value="drinks">مشروبات</option></select><input id="image" type="url" placeholder="رابط صورة الطبق" class="rounded-xl border p-3 sm:col-span-2"><textarea id="description" required maxlength="600" rows="3" placeholder="وصف الطبق وطريقة تحضيره" class="rounded-xl border p-3 sm:col-span-2"></textarea><div><label class="mb-1 block text-xs font-bold" data-t="quantity">الكمية (غرام — 100 على الأقل)</label><input id="quantity" type="number" min="100" value="100" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="calories">السعرات لكل 100غ</label><input id="calories" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="protein">البروتين لكل 100غ</label><input id="protein" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="carbs">الكربوهيدرات لكل 100غ</label><input id="carbs" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="fat">الدهون لكل 100غ</label><input id="fat" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><button id="submit" class="rounded-xl bg-emerald-700 px-5 py-3 font-black text-white hover:bg-emerald-800 sm:col-span-2" data-t="publish">نشر الطبق للجميع</button></form></section>
 
-    <section>
-      <div class="mb-5 flex flex-wrap items-end justify-between gap-4"><div><h2 class="text-2xl font-black">أطباق المجتمع</h2><p id="dishCount" class="text-slate-500">جار التحميل...</p></div><div class="flex flex-wrap gap-2"><button data-filter="all" class="filter rounded-full bg-emerald-800 px-4 py-2 text-sm font-bold text-white">الكل</button><button data-filter="dishes" class="filter rounded-full border border-slate-200 px-4 py-2 text-sm font-bold">أطباق</button><button data-filter="desserts" class="filter rounded-full border border-slate-200 px-4 py-2 text-sm font-bold">حلويات</button><button data-filter="fast" class="filter rounded-full border border-slate-200 px-4 py-2 text-sm font-bold">سريعة</button><button data-filter="drinks" class="filter rounded-full border border-slate-200 px-4 py-2 text-sm font-bold">مشروبات</button></div></div>
-      <div id="dishesGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"><p class="text-slate-500">جار تحميل الأطباق من قاعدة البيانات...</p></div>
-    </section>
-
-    <footer class="mt-12 border-t border-amber-100 pt-6 text-center text-sm text-slate-500">المبرمج: <strong class="text-emerald-800">BOABCA AZEDDIN</strong> — <a class="text-emerald-800" href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></footer>
-  </div>
-  <div id="toast" class="fixed bottom-5 right-5 hidden max-w-sm rounded-xl bg-emerald-900 px-4 py-3 font-bold text-white shadow-lg"></div>
-
-  <script>
-    // المفتاح Publishable/Anon آمن للاستخدام في الواجهة. لا تضع service_role/secret key هنا.
-    const SUPABASE_URL = 'https://jlrcjakmttqnhgxskjst.supabase.co';
-    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_8pC_KLMDZj6qeFYtbYN4fg_XEBJCDp4';
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-    const fallbackImage = 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80';
-    const categoryNames = { dishes: 'أطباق', desserts: 'حلويات', fast: 'أكلات سريعة', drinks: 'مشروبات' };
-    let dishes = [];
-    let activeFilter = 'all';
-    let editingId = null;
-
-    const $ = (id) => document.getElementById(id);
-    const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[char]));
-    const showMessage = (message) => { const toast = $('toast'); toast.textContent = message; toast.classList.remove('hidden'); clearTimeout(showMessage.timer); showMessage.timer = setTimeout(() => toast.classList.add('hidden'), 2800); };
-    const userId = () => { let id = localStorage.getItem('maida-voter-id'); if (!id) { id = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`; localStorage.setItem('maida-voter-id', id); } return id; };
-
-    function setConnection(connected, text) {
-      const status = $('connectionStatus'); status.textContent = text;
-      status.className = connected ? 'rounded-full bg-emerald-100 px-3 py-2 text-xs font-bold text-emerald-800' : 'rounded-full bg-red-100 px-3 py-2 text-xs font-bold text-red-700';
-    }
-
-    async function loadDishes() {
-      const { data, error } = await client.from('dishes').select('*, dish_ratings(value)').order('created_at', { ascending: false });
-      if (error) { setConnection(false, 'تعذر الاتصال'); $('dishesGrid').innerHTML = `<p class="text-red-600 sm:col-span-2 lg:col-span-3">تعذر تحميل الأطباق: ${escapeHTML(error.message)}<br><small>تأكد من تشغيل ملف supabase/schema.sql في Supabase.</small></p>`; return; }
-      dishes = data || []; setConnection(true, 'متصل ومشترك'); render();
-    }
-
-    function average(ratings) { return ratings.length ? ratings.reduce((sum, rating) => sum + Number(rating.value), 0) / ratings.length : 0; }
-
-    function render() {
-      const visible = dishes.filter((dish) => activeFilter === 'all' || dish.category === activeFilter);
-      $('dishCount').textContent = `${dishes.length} طبق مشترك مع المجتمع`;
-      if (!visible.length) { $('dishesGrid').innerHTML = '<div class="rounded-2xl border border-dashed border-emerald-200 p-10 text-center text-slate-500 sm:col-span-2 lg:col-span-3">لا توجد أطباق في هذا القسم بعد. كن أول من يضيف طبقاً!</div>'; return; }
-      $('dishesGrid').innerHTML = visible.map((dish) => {
-        const ratings = dish.dish_ratings || []; const avg = average(ratings);
-        return `<article class="overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"><img src="${escapeHTML(dish.image_url || fallbackImage)}" alt="${escapeHTML(dish.name)}" class="h-52 w-full object-cover" onerror="this.src='${fallbackImage}'"><div class="p-5"><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">${escapeHTML(categoryNames[dish.category] || dish.category)}</span><h3 class="mt-3 text-xl font-black text-slate-800">${escapeHTML(dish.name)}</h3><p class="mt-2 min-h-12 text-sm text-slate-600">${escapeHTML(dish.description)}</p><div class="mt-4 grid grid-cols-4 gap-1 rounded-xl bg-emerald-50 p-2 text-center text-[11px] text-emerald-900"><span><b class="block">${Number(dish.calories || 0).toFixed(0)}</b>سعرة</span><span><b class="block">${Number(dish.protein || 0).toFixed(1)}</b>بروتين</span><span><b class="block">${Number(dish.carbs || 0).toFixed(1)}</b>كربوهيدرات</span><span><b class="block">${Number(dish.fat || 0).toFixed(1)}</b>دهون</span></div><div class="mt-4 flex items-center justify-between border-t pt-4"><span class="font-bold text-amber-500">⭐ ${avg.toFixed(1)} <small class="text-slate-400">(${ratings.length})</small></span><span class="flex gap-0.5">${[1,2,3,4,5].map((score) => `<button type="button" class="rate rounded px-0.5 text-lg text-amber-400 hover:bg-amber-50" data-id="${dish.id}" data-score="${score}" aria-label="تقييم ${score}">★</button>`).join('')}</span></div><div class="mt-3 flex gap-2"><button type="button" class="edit rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-emerald-50 hover:text-emerald-800" data-id="${dish.id}">تعديل</button><button type="button" class="delete rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-red-50 hover:text-red-700" data-id="${dish.id}">حذف</button></div></div></article>`;
-      }).join('');
-      document.querySelectorAll('.rate').forEach((button) => button.addEventListener('click', () => rateDish(button.dataset.id, Number(button.dataset.score))));
-      document.querySelectorAll('.edit').forEach((button) => button.addEventListener('click', () => startEdit(button.dataset.id)));
-      document.querySelectorAll('.delete').forEach((button) => button.addEventListener('click', () => deleteDish(button.dataset.id)));
-    }
-
-    async function rateDish(dishId, value) {
-      const { error } = await client.from('dish_ratings').upsert({ dish_id: dishId, voter_id: userId(), value }, { onConflict: 'dish_id,voter_id' });
-      if (error) { showMessage(`تعذر حفظ التقييم: ${error.message}`); return; }
-      showMessage('تم حفظ تقييمك للجميع'); await loadDishes();
-    }
-
-    function startEdit(id) {
-      const dish = dishes.find((item) => item.id === id); if (!dish) return; editingId = id;
-      $('formTitle').textContent = 'تعديل الطبق المشترك'; $('submitButton').textContent = 'حفظ التعديلات'; $('cancelButton').classList.remove('hidden');
-      $('dishName').value = dish.name; $('dishCategory').value = dish.category; $('dishImage').value = dish.image_url || ''; $('dishDescription').value = dish.description || ''; $('quantity').value = dish.quantity || 100; $('calories').value = dish.calories || 0; $('protein').value = dish.protein || 0; $('carbs').value = dish.carbs || 0; $('fat').value = dish.fat || 0; $('fiber').value = dish.fiber || 0; $('add').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function resetForm() { editingId = null; $('dishForm').reset(); $('quantity').value = 100; $('calories').value = 0; $('protein').value = 0; $('carbs').value = 0; $('fat').value = 0; $('fiber').value = 0; $('formTitle').textContent = 'أضف طبقك للمجتمع'; $('submitButton').textContent = 'نشر الطبق للجميع'; $('cancelButton').classList.add('hidden'); }
-
-    async function deleteDish(id) { const dish = dishes.find((item) => item.id === id); if (!dish || !confirm(`هل تريد حذف «${dish.name}» من المائدة؟`)) return; const { error } = await client.from('dishes').delete().eq('id', id); if (error) { showMessage(`تعذر الحذف: ${error.message}`); return; } showMessage('تم حذف الطبق من المجتمع'); await loadDishes(); }
-
-    $('dishForm').addEventListener('submit', async (event) => {
-      event.preventDefault(); const button = $('submitButton'); button.disabled = true;
-      const row = { name: $('dishName').value.trim(), category: $('dishCategory').value, image_url: $('dishImage').value.trim() || fallbackImage, description: $('dishDescription').value.trim(), quantity: Math.max(100, Number($('quantity').value || 100)), calories: Number($('calories').value || 0), protein: Number($('protein').value || 0), carbs: Number($('carbs').value || 0), fat: Number($('fat').value || 0), fiber: Number($('fiber').value || 0) };
-      const result = editingId ? await client.from('dishes').update(row).eq('id', editingId) : await client.from('dishes').insert(row);
-      button.disabled = false; if (result.error) { showMessage(`حدث خطأ: ${result.error.message}`); return; }
-      showMessage(editingId ? 'تم تحديث الطبق للجم��ع' : 'تم نشر الطبق لجميع الزوار'); resetForm(); await loadDishes();
-    });
-
-    $('cancelButton').addEventListener('click', resetForm);
-    document.querySelectorAll('.filter').forEach((button) => button.addEventListener('click', () => { activeFilter = button.dataset.filter; document.querySelectorAll('.filter').forEach((item) => { item.classList.toggle('bg-emerald-800', item === button); item.classList.toggle('text-white', item === button); }); render(); }));
-    client.channel('shared-dishes').on('postgres_changes', { event: '*', schema: 'public', table: 'dishes' }, loadDishes).on('postgres_changes', { event: '*', schema: 'public', table: 'dish_ratings' }, loadDishes).subscribe();
-    loadDishes();
-  </script>
+    <section><div class="mb-5 flex flex-wrap items-end justify-between gap-4"><div><h2 class="text-2xl font-black" data-t="community">أطباق المجتمع</h2><p id="count" class="text-slate-500"></p></div><div class="flex flex-wrap gap-2"><button class="filter rounded-full bg-emerald-800 px-4 py-2 text-sm font-bold text-white" data-filter="all" data-t="all">الكل</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="dishes" data-t="dishes">أطباق</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="desserts" data-t="desserts">حلويات</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="fast" data-t="fast">سريعة</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="drinks" data-t="drinks">مشروبات</button></div></div><div id="grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"><p class="text-slate-500" data-t="loading">جار التحميل...</p></div></section>
+    <footer class="mt-12 border-t border-amber-100 pt-6 text-center text-sm text-slate-500"><span data-t="footer">المبرمج:</span> <strong class="text-emerald-800">BOABCA AZEDDIN</strong> — <a class="text-emerald-800" href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></footer>
+  </div><div id="toast" class="fixed bottom-5 right-5 hidden rounded-xl bg-emerald-900 px-4 py-3 font-bold text-white shadow-lg"></div>
+<script>
+const db=window.supabase.createClient('https://jlrcjakmttqnhgxskjst.supabase.co','sb_publishable_8pC_KLMDZj6qeFYtbYN4fg_XEBJCDp4');const fallback='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80';let dishes=[],active='all';const $=id=>document.getElementById(id);const names={dishes:['أطباق','Dishes'],desserts:['حلويات','Desserts'],fast:['أكلات سريعة','Fast food'],drinks:['مشروبات','Drinks']};const text={ar:{brand:'مائدة',tagline:'شارك أطباقك واكتشف أطباق المجتمع',settings:'الإعدادات',language:'اللغة',fontSize:'حجم الخط',developer:'المبرمج',add:'+ إضافة طبق',addTitle:'أضف طبقك للمجتمع',quantity:'الكمية (غرام — 100 على الأقل)',calories:'السعرات لكل 100غ',protein:'البروتين لكل 100غ',carbs:'الكربوهيدرات لكل 100غ',fat:'الدهون لكل 100غ',publish:'نشر الطبق للجميع',community:'أطباق المجتمع',all:'الكل',dishes:'أطباق',desserts:'حلويات',fast:'سريعة',drinks:'مشروبات',loading:'جار التحميل...',footer:'المبرمج:'},en:{brand:'Maida',tagline:'Share your dishes and discover the community table',settings:'Settings',language:'Language',fontSize:'Font size',developer:'Developer',add:'+ Add a dish',addTitle:'Add your dish to the community',quantity:'Quantity (grams — minimum 100)',calories:'Calories per 100g',protein:'Protein per 100g',carbs:'Carbs per 100g',fat:'Fat per 100g',publish:'Publish dish for everyone',community:'Community dishes',all:'All',dishes:'Dishes',desserts:'Desserts',fast:'Fast food',drinks:'Drinks',loading:'Loading...',footer:'Developer:'}};let lang=localStorage.getItem('maida-lang')||'ar';function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}function toast(m){$('toast').textContent=m;$('toast').classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.add('hidden'),2500)}function voter(){let x=localStorage.getItem('maida-voter');if(!x){x=crypto.randomUUID?crypto.randomUUID():Date.now()+'';localStorage.setItem('maida-voter',x)}return x}
+async function load(){const r=await db.from('dishes').select('*,dish_ratings(value)').order('created_at',{ascending:false});if(r.error){$('grid').innerHTML='<p class="text-red-600">تعذر الاتصال بقاعدة البيانات. شغّل supabase/schema.sql أولاً.</p>';return}dishes=r.data||[];render()}function render(){let list=dishes.filter(d=>active==='all'||d.category===active);$('count').textContent=lang==='en'?`${dishes.length} shared dishes`:`${dishes.length} طبق مشترك`;if(!list.length){$('grid').innerHTML='<div class="rounded-2xl border border-dashed p-10 text-center text-slate-500">لا توجد أطباق في هذا القسم بعد.</div>';return}$('grid').innerHTML=list.map(d=>{let rs=d.dish_ratings||[],a=rs.length?rs.reduce((s,x)=>s+Number(x.value),0)/rs.length:0;return `<article class="card overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm"><img src="${esc(d.image_url||fallback)}" onerror="this.src='${fallback}'" class="h-52 w-full object-cover" alt="${esc(d.name)}"><div class="p-5"><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">${esc(names[d.category]?.[lang==='en'?1:0]||d.category)}</span><h3 class="mt-3 text-xl font-black">${esc(d.name)}</h3><p class="mt-2 min-h-12 text-sm text-slate-600">${esc(d.description)}</p><div class="mt-4 grid grid-cols-4 gap-1 rounded-xl bg-emerald-50 p-2 text-center text-[11px] text-emerald-900"><span><b class="block">${Number(d.calories||0).toFixed(0)}</b>kcal</span><span><b class="block">${Number(d.protein||0).toFixed(1)}</b>${lang==='en'?'protein':'بروتين'}</span><span><b class="block">${Number(d.carbs||0).toFixed(1)}</b>${lang==='en'?'carbs':'كربوهيدرات'}</span><span><b class="block">${Number(d.fat||0).toFixed(1)}</b>${lang==='en'?'fat':'دهون'}</span></div><div class="mt-4 flex items-center justify-between border-t pt-4"><span class="font-bold text-amber-500">⭐ ${a.toFixed(1)} (${rs.length})</span><span class="stars">${[1,2,3,4,5].map(n=>`<button data-id="${d.id}" data-score="${n}" aria-label="${n}">★</button>`).join('')}</span></div></div></article>`}).join('');document.querySelectorAll('.stars button').forEach(b=>b.onclick=()=>rate(b.dataset.id,+b.dataset.score))}
+$('form').onsubmit=async e=>{e.preventDefault();let b=$('submit');b.disabled=true;let row={name:$('name').value.trim(),category:$('category').value,image_url:$('image').value.trim()||fallback,description:$('description').value.trim(),quantity:Math.max(100,+$('quantity').value||100),calories:+$('calories').value||0,protein:+$('protein').value||0,carbs:+$('carbs').value||0,fat:+$('fat').value||0};let r=await db.from('dishes').insert(row);b.disabled=false;if(r.error){toast(r.error.message);return}e.target.reset();$('quantity').value=100;toast(lang==='en'?'Dish published for everyone':'تم نشر الطبق للجميع');load()};async function rate(id,value){let r=await db.from('dish_ratings').upsert({dish_id:id,voter_id:voter(),value},{onConflict:'dish_id,voter_id'});if(r.error){toast(r.error.message);return}toast(lang==='en'?'Rating saved':'تم حفظ التقييم');load()}
+function applyLanguage(){let t=text[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.textContent=t[e.dataset.t]||e.textContent);$('language').value=lang;render()}$('settingsBtn').onclick=e=>{$('settings').classList.toggle('open');e.stopPropagation()};document.addEventListener('click',e=>{if(!e.target.closest('.relative'))$('settings').classList.remove('open')});$('language').onchange=e=>{lang=e.target.value;localStorage.setItem('maida-lang',lang);applyLanguage()};$('fontSize').onchange=e=>{document.documentElement.style.setProperty('--size',e.target.value+'px');localStorage.setItem('maida-size',e.target.value)};let fs=localStorage.getItem('maida-size')||'16';$('fontSize').value=fs;document.documentElement.style.setProperty('--size',fs+'px');document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{active=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>{x.classList.toggle('bg-emerald-800',x===b);x.classList.toggle('text-white',x===b)});render()});db.channel('maida-live').on('postgres_changes',{event:'*',schema:'public',table:'dishes'},load).on('postgres_changes',{event:'*',schema:'public',table:'dish_ratings'},load).subscribe();applyLanguage();load();
+</script>
 </body>
 </html>
