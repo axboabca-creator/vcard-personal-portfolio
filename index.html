@@ -1,33 +1,1978 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="مائدة — منصة مجتمعية لمشاركة الأطباق وتقييمها">
-  <title>مائدة | مشاركة الأطباق</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="LegalRef & Citation Index — legal references, relationships, annotations, documents, analysis, and quizzes."
+  />
+  <title>LegalRef & Citation Index</title>
+
   <style>
-    :root{--size:16px}body{font-size:var(--size);font-family:Tahoma,Arial,sans-serif}.card{transition:.2s}.card:hover{transform:translateY(-4px);box-shadow:0 16px 30px #17493618}.stars button{font-size:1.35rem;color:#d6d6c8}.stars button:hover,.stars button.active{color:#e9ae3d}.settings{display:none}.settings.open{display:block}
+    :root {
+      --font-size: 16px;
+      --bg: #0c111d;
+      --bg-soft: #121a2a;
+      --panel: #172235;
+      --panel-light: #1d2b42;
+      --border: #2b3c58;
+      --text: #edf4ff;
+      --muted: #9baac0;
+      --primary: #56b6ff;
+      --primary-dark: #237fc1;
+      --accent: #c7a76b;
+      --success: #35d09a;
+      --warning: #f4bd5f;
+      --danger: #ef6b79;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: var(--font-size);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(40, 112, 169, 0.18), transparent 32rem),
+        linear-gradient(135deg, #0c111d, #101827 50%, #0d1524);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: var(--primary);
+    }
+
+    .container {
+      width: min(1440px, calc(100% - 32px));
+      margin-inline: auto;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(12, 17, 29, 0.88);
+      backdrop-filter: blur(18px);
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid rgba(199, 167, 107, 0.5);
+      border-radius: 13px;
+      color: var(--accent);
+      background: rgba(199, 167, 107, 0.08);
+      font-size: 1.45rem;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 800;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 15px;
+      color: var(--text);
+      background: var(--panel-light);
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.14);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #06101c;
+      font-weight: 800;
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+    }
+
+    .btn-success {
+      background: rgba(53, 208, 154, 0.16);
+      border-color: rgba(53, 208, 154, 0.4);
+      color: #87f3c7;
+    }
+
+    .btn-danger {
+      background: rgba(239, 107, 121, 0.14);
+      border-color: rgba(239, 107, 121, 0.4);
+      color: #ffabb5;
+    }
+
+    .btn-small {
+      padding: 6px 10px;
+      font-size: 0.84rem;
+    }
+
+    main {
+      padding: 34px 0 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+
+    .hero-card,
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(23, 34, 53, 0.98), rgba(17, 27, 43, 0.92));
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: clamp(24px, 5vw, 48px);
+    }
+
+    .hero-card h1 {
+      max-width: 780px;
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 5vw, 4.3rem);
+      line-height: 1.05;
+    }
+
+    .hero-card p {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .hero-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .stat {
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .stat strong {
+      color: var(--primary);
+      font-size: 2rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
+
+    .section-heading p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .toolbar,
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      padding: 11px 12px;
+      color: var(--text);
+      background: #0d1727;
+    }
+
+    .field textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(86, 182, 255, 0.12);
+    }
+
+    .span-12 { grid-column: span 12; }
+    .span-8 { grid-column: span 8; }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .search-results {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .legal-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .legal-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .legal-card h3 {
+      margin: 0;
+      color: var(--primary);
+    }
+
+    .legal-card p {
+      color: #d2dbea;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(86, 182, 255, 0.35);
+      border-radius: 999px;
+      padding: 4px 9px;
+      color: #a9dcff;
+      background: rgba(86, 182, 255, 0.1);
+      font-size: 0.76rem;
+      white-space: nowrap;
+    }
+
+    .badge.accent {
+      color: #ead29e;
+      border-color: rgba(199, 167, 107, 0.4);
+      background: rgba(199, 167, 107, 0.1);
+    }
+
+    .relationship-list,
+    .file-list,
+    .quiz-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 13px;
+    }
+
+    .relationship-item,
+    .file-item,
+    .quiz-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .relationship-item small,
+    .file-item small {
+      display: block;
+      color: var(--muted);
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .drop-zone {
+      display: grid;
+      min-height: 170px;
+      place-items: center;
+      padding: 24px;
+      border: 1.5px dashed #456080;
+      border-radius: 14px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(86, 182, 255, 0.035);
+      transition: 0.2s ease;
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--primary);
+      background: rgba(86, 182, 255, 0.1);
+    }
+
+    .drop-zone strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+
+    .analysis-box {
+      min-height: 145px;
+      margin-top: 15px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: #d7e2f4;
+      background: #0e1829;
+      white-space: pre-wrap;
+    }
+
+    .quiz-option {
+      display: block;
+      margin: 8px 0;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--success);
+      background: rgba(53, 208, 154, 0.12);
+    }
+
+    .quiz-option.incorrect {
+      border-color: var(--danger);
+      background: rgba(239, 107, 121, 0.12);
+    }
+
+    pre {
+      max-height: 360px;
+      overflow: auto;
+      margin: 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: #d9e7ff;
+      background: #09111e;
+      font-size: 0.82rem;
+    }
+
+    .empty {
+      padding: 24px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      max-width: 360px;
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 13px 16px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      background: #1c2a40;
+      box-shadow: var(--shadow);
+      transition: 0.25s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      padding: 26px 0 42px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--accent);
+    }
+
+    @media (max-width: 950px) {
+      .hero,
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .span-8,
+      .span-6,
+      .span-4,
+      .span-3 {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 20px, 1440px);
+      }
+
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions .btn {
+        flex: 1;
+      }
+
+      .hero-stat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .legal-card-header,
+      .relationship-item,
+      .file-item,
+      .quiz-item {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media print {
+      .app-header,
+      .settings-section,
+      .actions,
+      .drop-zone,
+      button {
+        display: none !important;
+      }
+
+      body {
+        color: #111;
+        background: #fff;
+      }
+
+      .panel,
+      .hero-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        background: #fff;
+      }
+
+      .container {
+        width: 100%;
+      }
+    }
   </style>
 </head>
-<body class="min-h-screen bg-amber-50 text-slate-800">
-  <div class="mx-auto max-w-6xl px-4 py-5 sm:px-8 sm:py-8">
-    <header class="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-amber-100 bg-white p-5 shadow-sm sm:p-7">
-      <div><h1 class="text-3xl font-black text-emerald-900">🍽️ <span data-t="brand">مائدة</span></h1><p class="mt-1 text-slate-500" data-t="tagline">شارك أطباقك واكتشف أطباق المجتمع</p></div>
-      <div class="flex items-center gap-2"><div class="relative"><button id="settingsBtn" class="rounded-full bg-emerald-100 px-4 py-2 font-bold text-emerald-900">⚙ <span data-t="settings">الإعدادات</span></button><div id="settings" class="settings absolute left-0 top-12 z-20 w-64 rounded-2xl border bg-white p-4 shadow-xl"><h2 class="mb-3 font-black text-emerald-900" data-t="settings">الإعدادات</h2><label class="mb-1 block text-xs font-bold" data-t="language">اللغة</label><select id="language" class="mb-3 w-full rounded-lg border p-2"><option value="ar">العربية</option><option value="en">English</option></select><label class="mb-1 block text-xs font-bold" data-t="fontSize">حجم الخط</label><select id="fontSize" class="w-full rounded-lg border p-2"><option value="14">صغير</option><option value="16">متوسط</option><option value="18">كبير</option><option value="20">كبير جداً</option></select><hr class="my-3"><p class="text-xs text-slate-500" data-t="developer">المبرمج</p><strong class="text-emerald-800">BOABCA AZEDDIN</strong><a class="mt-1 block text-xs text-emerald-700" href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></div></div><a href="#add" class="rounded-full bg-emerald-800 px-4 py-2 font-bold text-white" data-t="add">+ إضافة طبق</a></div>
-    </header>
 
-    <section id="add" class="mb-9 rounded-3xl border border-amber-100 bg-white p-5 shadow-sm sm:p-7"><h2 class="mb-5 text-2xl font-black text-emerald-800" data-t="addTitle">أضف طبقك للمجتمع</h2><form id="form" class="grid gap-4 sm:grid-cols-2"><input id="name" required maxlength="120" placeholder="اسم الطبق" class="rounded-xl border p-3"><select id="category" class="rounded-xl border p-3"><option value="dishes">أطباق</option><option value="desserts">حلويات</option><option value="fast">أكلات سريعة</option><option value="drinks">مشروبات</option></select><input id="image" type="url" placeholder="رابط صورة الطبق" class="rounded-xl border p-3 sm:col-span-2"><textarea id="description" required maxlength="600" rows="3" placeholder="وصف الطبق وطريقة تحضيره" class="rounded-xl border p-3 sm:col-span-2"></textarea><div><label class="mb-1 block text-xs font-bold" data-t="quantity">الكمية (غرام — 100 على الأقل)</label><input id="quantity" type="number" min="100" value="100" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="calories">السعرات لكل 100غ</label><input id="calories" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="protein">البروتين لكل 100غ</label><input id="protein" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="carbs">الكربوهيدرات لكل 100غ</label><input id="carbs" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><div><label class="mb-1 block text-xs font-bold" data-t="fat">الدهون لكل 100غ</label><input id="fat" type="number" min="0" step=".1" value="0" class="w-full rounded-xl border p-3"></div><button id="submit" class="rounded-xl bg-emerald-700 px-5 py-3 font-black text-white hover:bg-emerald-800 sm:col-span-2" data-t="publish">نشر الطبق للجميع</button></form></section>
+<body>
+  <header class="app-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">
+        <span class="brand-icon">⚖️</span>
+        <h1 class="brand-title" data-i18n="appTitle">LegalRef & Citation Index</h1>
+      </a>
 
-    <section><div class="mb-5 flex flex-wrap items-end justify-between gap-4"><div><h2 class="text-2xl font-black" data-t="community">أطباق المجتمع</h2><p id="count" class="text-slate-500"></p></div><div class="flex flex-wrap gap-2"><button class="filter rounded-full bg-emerald-800 px-4 py-2 text-sm font-bold text-white" data-filter="all" data-t="all">الكل</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="dishes" data-t="dishes">أطباق</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="desserts" data-t="desserts">حلويات</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="fast" data-t="fast">سريعة</button><button class="filter rounded-full border px-4 py-2 text-sm font-bold" data-filter="drinks" data-t="drinks">مشروبات</button></div></div><div id="grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"><p class="text-slate-500" data-t="loading">جار التحميل...</p></div></section>
-    <footer class="mt-12 border-t border-amber-100 pt-6 text-center text-sm text-slate-500"><span data-t="footer">المبرمج:</span> <strong class="text-emerald-800">BOABCA AZEDDIN</strong> — <a class="text-emerald-800" href="mailto:azeddinazeddin2005@gmail.com">azeddinazeddin2005@gmail.com</a></footer>
-  </div><div id="toast" class="fixed bottom-5 right-5 hidden rounded-xl bg-emerald-900 px-4 py-3 font-bold text-white shadow-lg"></div>
-<script>
-const db=window.supabase.createClient('https://jlrcjakmttqnhgxskjst.supabase.co','sb_publishable_8pC_KLMDZj6qeFYtbYN4fg_XEBJCDp4');const fallback='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80';let dishes=[],active='all';const $=id=>document.getElementById(id);const names={dishes:['أطباق','Dishes'],desserts:['حلويات','Desserts'],fast:['أكلات سريعة','Fast food'],drinks:['مشروبات','Drinks']};const text={ar:{brand:'مائدة',tagline:'شارك أطباقك واكتشف أطباق المجتمع',settings:'الإعدادات',language:'اللغة',fontSize:'حجم الخط',developer:'المبرمج',add:'+ إضافة طبق',addTitle:'أضف طبقك للمجتمع',quantity:'الكمية (غرام — 100 على الأقل)',calories:'السعرات لكل 100غ',protein:'البروتين لكل 100غ',carbs:'الكربوهيدرات لكل 100غ',fat:'الدهون لكل 100غ',publish:'نشر الطبق للجميع',community:'أطباق المجتمع',all:'الكل',dishes:'أطباق',desserts:'حلويات',fast:'سريعة',drinks:'مشروبات',loading:'جار التحميل...',footer:'المبرمج:'},en:{brand:'Maida',tagline:'Share your dishes and discover the community table',settings:'Settings',language:'Language',fontSize:'Font size',developer:'Developer',add:'+ Add a dish',addTitle:'Add your dish to the community',quantity:'Quantity (grams — minimum 100)',calories:'Calories per 100g',protein:'Protein per 100g',carbs:'Carbs per 100g',fat:'Fat per 100g',publish:'Publish dish for everyone',community:'Community dishes',all:'All',dishes:'Dishes',desserts:'Desserts',fast:'Fast food',drinks:'Drinks',loading:'Loading...',footer:'Developer:'}};let lang=localStorage.getItem('maida-lang')||'ar';function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}function toast(m){$('toast').textContent=m;$('toast').classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.add('hidden'),2500)}function voter(){let x=localStorage.getItem('maida-voter');if(!x){x=crypto.randomUUID?crypto.randomUUID():Date.now()+'';localStorage.setItem('maida-voter',x)}return x}
-async function load(){const r=await db.from('dishes').select('*,dish_ratings(value)').order('created_at',{ascending:false});if(r.error){$('grid').innerHTML='<p class="text-red-600">تعذر الاتصال بقاعدة البيانات. شغّل supabase/schema.sql أولاً.</p>';return}dishes=r.data||[];render()}function render(){let list=dishes.filter(d=>active==='all'||d.category===active);$('count').textContent=lang==='en'?`${dishes.length} shared dishes`:`${dishes.length} طبق مشترك`;if(!list.length){$('grid').innerHTML='<div class="rounded-2xl border border-dashed p-10 text-center text-slate-500">لا توجد أطباق في هذا القسم بعد.</div>';return}$('grid').innerHTML=list.map(d=>{let rs=d.dish_ratings||[],a=rs.length?rs.reduce((s,x)=>s+Number(x.value),0)/rs.length:0;return `<article class="card overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm"><img src="${esc(d.image_url||fallback)}" onerror="this.src='${fallback}'" class="h-52 w-full object-cover" alt="${esc(d.name)}"><div class="p-5"><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">${esc(names[d.category]?.[lang==='en'?1:0]||d.category)}</span><h3 class="mt-3 text-xl font-black">${esc(d.name)}</h3><p class="mt-2 min-h-12 text-sm text-slate-600">${esc(d.description)}</p><div class="mt-4 grid grid-cols-4 gap-1 rounded-xl bg-emerald-50 p-2 text-center text-[11px] text-emerald-900"><span><b class="block">${Number(d.calories||0).toFixed(0)}</b>kcal</span><span><b class="block">${Number(d.protein||0).toFixed(1)}</b>${lang==='en'?'protein':'بروتين'}</span><span><b class="block">${Number(d.carbs||0).toFixed(1)}</b>${lang==='en'?'carbs':'كربوهيدرات'}</span><span><b class="block">${Number(d.fat||0).toFixed(1)}</b>${lang==='en'?'fat':'دهون'}</span></div><div class="mt-4 flex items-center justify-between border-t pt-4"><span class="font-bold text-amber-500">⭐ ${a.toFixed(1)} (${rs.length})</span><span class="stars">${[1,2,3,4,5].map(n=>`<button data-id="${d.id}" data-score="${n}" aria-label="${n}">★</button>`).join('')}</span></div></div></article>`}).join('');document.querySelectorAll('.stars button').forEach(b=>b.onclick=()=>rate(b.dataset.id,+b.dataset.score))}
-$('form').onsubmit=async e=>{e.preventDefault();let b=$('submit');b.disabled=true;let row={name:$('name').value.trim(),category:$('category').value,image_url:$('image').value.trim()||fallback,description:$('description').value.trim(),quantity:Math.max(100,+$('quantity').value||100),calories:+$('calories').value||0,protein:+$('protein').value||0,carbs:+$('carbs').value||0,fat:+$('fat').value||0};let r=await db.from('dishes').insert(row);b.disabled=false;if(r.error){toast(r.error.message);return}e.target.reset();$('quantity').value=100;toast(lang==='en'?'Dish published for everyone':'تم نشر الطبق للجميع');load()};async function rate(id,value){let r=await db.from('dish_ratings').upsert({dish_id:id,voter_id:voter(),value},{onConflict:'dish_id,voter_id'});if(r.error){toast(r.error.message);return}toast(lang==='en'?'Rating saved':'تم حفظ التقييم');load()}
-function applyLanguage(){let t=text[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.textContent=t[e.dataset.t]||e.textContent);$('language').value=lang;render()}$('settingsBtn').onclick=e=>{$('settings').classList.toggle('open');e.stopPropagation()};document.addEventListener('click',e=>{if(!e.target.closest('.relative'))$('settings').classList.remove('open')});$('language').onchange=e=>{lang=e.target.value;localStorage.setItem('maida-lang',lang);applyLanguage()};$('fontSize').onchange=e=>{document.documentElement.style.setProperty('--size',e.target.value+'px');localStorage.setItem('maida-size',e.target.value)};let fs=localStorage.getItem('maida-size')||'16';$('fontSize').value=fs;document.documentElement.style.setProperty('--size',fs+'px');document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{active=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>{x.classList.toggle('bg-emerald-800',x===b);x.classList.toggle('text-white',x===b)});render()});db.channel('maida-live').on('postgres_changes',{event:'*',schema:'public',table:'dishes'},load).on('postgres_changes',{event:'*',schema:'public',table:'dish_ratings'},load).subscribe();applyLanguage();load();
-</script>
+      <div class="header-actions">
+        <button class="btn btn-primary" id="shareAppBtn" data-i18n="shareApp">
+          Share App
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <span class="badge accent" data-i18n="legalWorkspace">Legal research workspace</span>
+        <h1 data-i18n="heroTitle">Organize law. Connect authority. Think clearly.</h1>
+        <p data-i18n="heroDescription">
+          Search legal references, connect related provisions, annotate clauses,
+          manage files locally, and create document-based assessments.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#legalSearch" data-i18n="startResearch">
+            Start Research
+          </a>
+          <a class="btn btn-secondary" href="#aiAnalysis" data-i18n="analyzeDocuments">
+            Analyze Documents
+          </a>
+        </div>
+      </div>
+
+      <div class="panel hero-stat-grid">
+        <div class="stat">
+          <strong id="statArticles">0</strong>
+          <span data-i18n="articlesIndexed">Articles indexed</span>
+        </div>
+        <div class="stat">
+          <strong id="statRelationships">0</strong>
+          <span data-i18n="relationships">Relationships</span>
+        </div>
+        <div class="stat">
+          <strong id="statNotes">0</strong>
+          <span data-i18n="annotations">Annotations</span>
+        </div>
+        <div class="stat">
+          <strong id="statFiles">0</strong>
+          <span data-i18n="storedFiles">Stored files</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel settings-section section" id="settings">
+      <div class="section-heading">
+        <div>
+          <h2 data-i18n="settings">Settings</h2>
+          <p data-i18n="settingsDescription">Customize language and reading preferences.</p>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div class="field">
+          <label for="languageSelect" data-i18n="language">Language</label>
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fontSizeSelect" data-i18n="fontSize">Font size</label>
+          <select id="fontSizeSelect">
+            <option value="14px" data-i18n="small">Small</option>
+            <option value="16px" selected data-i18n="normal">Normal</option>
+            <option value="19px" data-i18n="large">Large</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label data-i18n="storageMode">Storage mode</label>
+          <div class="badge" style="height: 44px; justify-content: center;">
+            IndexedDB + local browser storage
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section" id="legalSearch">
+      <div class="section-heading">
+        <div>
+          <h2 data-i18n="legalSearchTitle">Legal Search & Filter System</h2>
+          <p data-i18n="legalSearchDescription">
+            Search by keywords, article numbers, categories, or legal concepts.
+          </p>
+        </div>
+        <button class="btn btn-secondary btn-small" id="resetSearchBtn" data-i18n="reset">
+          Reset
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <div class="field span-8">
+          <label for="searchInput" data-i18n="search">Search</label>
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Try: liability, Article 12, contract..."
+            data-i18n-placeholder="searchPlaceholder"
+          />
+        </div>
+
+        <div class="field span-4">
+          <label for="categoryFilter" data-i18n="category">Category</label>
+          <select id="categoryFilter">
+            <option value="all" data-i18n="allCategories">All categories</option>
+            <option value="Civil Law">Civil Law</option>
+            <option value="Contracts & Liability">Contracts & Liability</option>
+            <option value="Commercial Law">Commercial Law</option>
+            <option value="Procedure">Procedure</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="search-results" id="legalResults"></div>
+    </section>
+
+    <section class="panel section" id="relationships">
+      <div class="section-heading">
+        <div>
+          <h2 data-i18n="relationshipTitle">Database & Article Relationships</h2>
+          <p data-i18n="relationshipDescription">
+            Link provisions using relationships such as relates to, exempts, or overrides.
+          </p>
+        </div>
+      </div>
+
+      <form class="form-grid" id="relationshipForm">
+        <div class="field span-3">
+          <label for="sourceArticle" data-i18n="sourceArticle">Source article</label>
+          <select id="sourceArticle" required></select>
+        </div>
+
+        <div class="field span-3">
+          <label for="relationType" data-i18n="relationType">Relationship</label>
+          <select id="relationType">
+            <option>relates to</option>
+            <option>exempts</option>
+            <option>overrides</option>
+            <option>implements</option>
+            <option>clarifies</option>
+          </select>
+        </div>
+
+        <div class="field span-3">
+          <label for="targetArticle" data-i18n="targetArticle">Target article</label>
+          <select id="targetArticle" required></select>
+        </div>
+
+        <div class="field span-3">
+          <label for="relationshipComment" data-i18n="comment">Comment</label>
+          <input id="relationshipComment" placeholder="Optional explanation" />
+        </div>
+
+        <div class="span-12 actions">
+          <button class="btn btn-primary" type="submit" data-i18n="addRelationship">
+            Add Relationship
+          </button>
+        </div>
+      </form>
+
+      <div class="relationship-list" id="relationshipList"></div>
+    </section>
+
+    <section class="panel section" id="annotations">
+      <div class="section-heading">
+        <div>
+          <h2 data-i18n="annotationTitle">Legal Annotations & Notes</h2>
+          <p data-i18n="annotationDescription">
+            Add personal notes, research observations, or jurisprudential comments.
+          </p>
+        </div>
+      </div>
+
+      <form class="form-grid" id="noteForm">
+        <div class="field span-4">
+          <label for="noteArticle" data-i18n="article">Article</label>
+          <select id="noteArticle" required></select>
+        </div>
+
+        <div class="field span-8">
+          <label for="noteText" data-i18n="note">Note / jurisprudential comment</label>
+          <textarea
+            id="noteText"
+            required
+            placeholder="Write your analysis, interpretation, or تعليقات فقهية..."
+          ></textarea>
+        </div>
+
+        <div class="span-12 actions">
+          <button class="btn btn-primary" type="submit" data-i18n="saveNote">
+            Save Note
+          </button>
+        </div>
+      </form>
+
+      <div class="search-results" id="notesList"></div>
+    </section>
+
+    <section class="split-grid section" id="files">
+      <div class="panel">
+        <div class="section-heading">
+          <div>
+            <h2 data-i18n="imageVault">Image Vault</h2>
+            <p data-i18n="imageVaultDescription">
+              Store scans, evidence images, screenshots, and visual legal documents.
+            </p>
+          </div>
+        </div>
+
+        <div class="drop-zone" id="imageDropZone">
+          <div>
+            <strong data-i18n="dropImages">Drop images here or choose files</strong>
+            <span>PNG, JPG, JPEG, WEBP, GIF</span>
+            <br /><br />
+            <input id="imageInput" type="file" accept="image/*" multiple />
+          </div>
+        </div>
+
+        <div class="file-list" id="imageList"></div>
+      </div>
+
+      <div class="panel">
+        <div class="section-heading">
+          <div>
+            <h2 data-i18n="secureFiles">Secure Files Storage</h2>
+            <p data-i18n="secureFilesDescription">
+              Keep PDFs, office documents, text files, and other legal material locally.
+            </p>
+          </div>
+        </div>
+
+        <div class="drop-zone" id="fileDropZone">
+          <div>
+            <strong data-i18n="dropFiles">Drop documents here or choose files</strong>
+            <span>PDF, DOCX, TXT, CSV, JSON, ZIP, and more</span>
+            <br /><br />
+            <input id="fileInput" type="file" multiple />
+          </div>
+        </div>
+
+        <div class="file-list" id="fileList"></div>
+      </div>
+    </section>
+
+    <section class="panel section" id="aiAnalysis">
+      <div class="section-heading">
+        <div>
+          <h2 data-i18n="aiTitle">AI Document Analysis & Quizzes</h2>
+          <p data-i18n="aiDescription">
+            Extract local text insights and generate non-repetitive assessment questions.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field span-8">
+          <label for="analysisFileSelect" data-i18n="chooseFile">Choose stored text file</label>
+          <select id="analysisFileSelect">
+            <option value="">No stored text files available</option>
+          </select>
+        </div>
+
+        <div class="field span-4">
+          <label for="quizLevel" data-i18n="quizLevel">Quiz level</label>
+          <select id="quizLevel">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div class="field span-12">
+          <label for="analysisUpload" data-i18n="uploadForAnalysis">
+            Or upload a new text-based legal document
+          </label>
+          <input id="analysisUpload" type="file" accept=".txt,.md,.csv,.json,.html,.htm,.xml" />
+        </div>
+
+        <div class="span-12 actions">
+          <button class="btn btn-primary" id="analyzeBtn" type="button" data-i18n="runAnalysis">
+            Run Analysis
+          </button>
+          <button class="btn btn-success" id="generateQuizBtn" type="button" data-i18n="generateQuiz">
+            Generate Quiz
+          </button>
+        </div>
+      </div>
+
+      <div class="analysis-box" id="analysisOutput">
+        Select a document and run an analysis to see key insights.
+      </div>
+
+      <div class="quiz-list" id="quizList"></div>
+    </section>
+
+    <section class="panel section" id="export">
+      <div class="section-heading">
+        <div>
+          <h2 data-i18n="exportTitle">Export & Share Data</h2>
+          <p data-i18n="exportDescription">
+            Export your legal index, relationships, notes, and file metadata.
+          </p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" id="exportJsonBtn">Export JSON</button>
+        <button class="btn btn-secondary" id="exportMarkdownBtn">Export Markdown</button>
+        <button class="btn btn-secondary" id="printPdfBtn">Export / Print PDF</button>
+        <button class="btn btn-danger" id="clearDataBtn">Clear Metadata</button>
+      </div>
+
+      <br />
+
+      <pre id="jsonPreview">{}</pre>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        <strong>BOABCA AZEDDIN</strong>
+        ·
+        <a href="mailto:azeddinazeddin2005@gmail.com">
+          azeddinazeddin2005@gmail.com
+        </a>
+      </p>
+      <p>
+        LegalRef & Citation Index is a research assistant and does not replace
+        qualified legal advice.
+      </p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "legalref-citation-index-v1";
+    const DB_NAME = "legalref-file-vault";
+    const DB_VERSION = 1;
+    const FILE_STORE = "files";
+
+    const translations = {
+      en: {
+        appTitle: "LegalRef & Citation Index",
+        shareApp: "Share App",
+        legalWorkspace: "Legal research workspace",
+        heroTitle: "Organize law. Connect authority. Think clearly.",
+        heroDescription:
+          "Search legal references, connect related provisions, annotate clauses, manage files locally, and create document-based assessments.",
+        startResearch: "Start Research",
+        analyzeDocuments: "Analyze Documents",
+        articlesIndexed: "Articles indexed",
+        relationships: "Relationships",
+        annotations: "Annotations",
+        storedFiles: "Stored files",
+        settings: "Settings",
+        settingsDescription: "Customize language and reading preferences.",
+        language: "Language",
+        fontSize: "Font size",
+        small: "Small",
+        normal: "Normal",
+        large: "Large",
+        storageMode: "Storage mode",
+        legalSearchTitle: "Legal Search & Filter System",
+        legalSearchDescription:
+          "Search by keywords, article numbers, categories, or legal concepts.",
+        reset: "Reset",
+        search: "Search",
+        searchPlaceholder: "Try: liability, Article 12, contract...",
+        category: "Category",
+        allCategories: "All categories",
+        relationshipTitle: "Database & Article Relationships",
+        relationshipDescription:
+          "Link provisions using relationships such as relates to, exempts, or overrides.",
+        sourceArticle: "Source article",
+        relationType: "Relationship",
+        targetArticle: "Target article",
+        comment: "Comment",
+        addRelationship: "Add Relationship",
+        annotationTitle: "Legal Annotations & Notes",
+        annotationDescription:
+          "Add personal notes, research observations, or jurisprudential comments.",
+        article: "Article",
+        note: "Note / jurisprudential comment",
+        saveNote: "Save Note",
+        imageVault: "Image Vault",
+        imageVaultDescription:
+          "Store scans, evidence images, screenshots, and visual legal documents.",
+        dropImages: "Drop images here or choose files",
+        secureFiles: "Secure Files Storage",
+        secureFilesDescription:
+          "Keep PDFs, office documents, text files, and other legal material locally.",
+        dropFiles: "Drop documents here or choose files",
+        aiTitle: "AI Document Analysis & Quizzes",
+        aiDescription:
+          "Extract local text insights and generate non-repetitive assessment questions.",
+        chooseFile: "Choose stored text file",
+        quizLevel: "Quiz level",
+        uploadForAnalysis: "Or upload a new text-based legal document",
+        runAnalysis: "Run Analysis",
+        generateQuiz: "Generate Quiz",
+        exportTitle: "Export & Share Data",
+        exportDescription:
+          "Export your legal index, relationships, notes, and file metadata."
+      },
+      ar: {
+        appTitle: "فهرس المراجع والاستشهادات القانونية",
+        shareApp: "مشاركة التطبيق",
+        legalWorkspace: "مساحة بحث قانونية",
+        heroTitle: "نظّم القانون، اربط المصادر، وفكّر بوضوح.",
+        heroDescription:
+          "ابحث في المراجع القانونية، اربط النصوص ذات الصلة، أضف التعليقات، وأدر ملفاتك محليًا.",
+        startResearch: "ابدأ البحث",
+        analyzeDocuments: "حلّل المستندات",
+        articlesIndexed: "المواد المفهرسة",
+        relationships: "العلاقات",
+        annotations: "التعليقات",
+        storedFiles: "الملفات المخزنة",
+        settings: "الإعدادات",
+        settingsDescription: "خصّص اللغة وحجم القراءة.",
+        language: "اللغة",
+        fontSize: "حجم الخط",
+        small: "صغير",
+        normal: "عادي",
+        large: "كبير",
+        storageMode: "طريقة التخزين",
+        legalSearchTitle: "البحث والتصفية القانونية",
+        legalSearchDescription: "ابحث بالكلمات أو أرقام المواد أو التصنيفات.",
+        reset: "إعادة ضبط",
+        search: "بحث",
+        searchPlaceholder: "مثال: المسؤولية، المادة 12، العقد...",
+        category: "التصنيف",
+        allCategories: "كل التصنيفات",
+        relationshipTitle: "العلاقات بين المواد",
+        relationshipDescription: "اربط المواد بعلاقات مثل يتصل بـ أو يستثني أو يوضح.",
+        sourceArticle: "المادة المصدر",
+        relationType: "العلاقة",
+        targetArticle: "المادة الهدف",
+        comment: "تعليق",
+        addRelationship: "إضافة علاقة",
+        annotationTitle: "التعليقات والملاحظات القانونية",
+        annotationDescription: "أضف ملاحظاتك أو تعليقاتك الفقهية.",
+        article: "المادة",
+        note: "ملاحظة / تعليق فقهي",
+        saveNote: "حفظ الملاحظة",
+        imageVault: "خزنة الصور",
+        imageVaultDescription: "احفظ الصور والمستندات القانونية المرئية.",
+        dropImages: "أسقط الصور هنا أو اختر الملفات",
+        secureFiles: "تخزين الملفات",
+        secureFilesDescription: "احفظ ملفات PDF والمستندات والملفات النصية محليًا.",
+        dropFiles: "أسقط الملفات هنا أو اختر الملفات",
+        aiTitle: "تحليل المستندات والاختبارات",
+        aiDescription: "استخرج المؤشرات من النصوص وأنشئ أسئلة تقييمية.",
+        chooseFile: "اختر ملفًا نصيًا مخزنًا",
+        quizLevel: "مستوى الاختبار",
+        uploadForAnalysis: "أو ارفع مستندًا قانونيًا نصيًا جديدًا",
+        runAnalysis: "تشغيل التحليل",
+        generateQuiz: "إنشاء اختبار",
+        exportTitle: "تصدير ومشاركة البيانات",
+        exportDescription: "صدّر الفهرس والعلاقات والملاحظات وبيانات الملفات."
+      }
+    };
+
+    const defaultArticles = [
+      {
+        id: "civil-001",
+        number: "Article 1",
+        category: "Civil Law",
+        title: "Good Faith in the Exercise of Rights",
+        text:
+          "Rights must be exercised in accordance with good faith. An abuse of rights may create liability where the exercise causes unjustified harm."
+      },
+      {
+        id: "contract-012",
+        number: "Article 12",
+        category: "Contracts & Liability",
+        title: "Formation of Contract",
+        text:
+          "A contract is formed when an offer is accepted with the required legal elements, including consent, capacity, and a lawful object."
+      },
+      {
+        id: "contract-018",
+        number: "Article 18",
+        category: "Contracts & Liability",
+        title: "Non-Performance and Damages",
+        text:
+          "A party that fails to perform a contractual obligation may be required to compensate the foreseeable loss caused by the breach."
+      },
+      {
+        id: "commercial-031",
+        number: "Article 31",
+        category: "Commercial Law",
+        title: "Commercial Records",
+        text:
+          "Commercial records should be maintained accurately and made available where required by applicable law or judicial order."
+      },
+      {
+        id: "procedure-044",
+        number: "Article 44",
+        category: "Procedure",
+        title: "Burden of Proof",
+        text:
+          "The party asserting a fact generally bears the burden of proving that fact, subject to statutory exceptions."
+      }
+    ];
+
+    let state = {
+      articles: defaultArticles,
+      relationships: [],
+      notes: [],
+      settings: {
+        language: "en",
+        fontSize: "16px"
+      }
+    };
+
+    let db;
+    let currentAnalysisText = "";
+    let generatedQuiz = [];
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timeout);
+      showToast.timeout = setTimeout(() => toast.classList.remove("show"), 3200);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function persistState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updatePreview();
+      updateStats();
+    }
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (saved) {
+          state = {
+            ...state,
+            ...saved,
+            settings: { ...state.settings, ...(saved.settings || {}) }
+          };
+        }
+      } catch {
+        showToast("Saved metadata could not be loaded.");
+      }
+    }
+
+    function translatePage() {
+      const language = state.settings.language;
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+
+      $$("[data-i18n]").forEach((element) => {
+        const key = element.dataset.i18n;
+        if (translations[language][key]) {
+          element.textContent = translations[language][key];
+        }
+      });
+
+      $$("[data-i18n-placeholder]").forEach((element) => {
+        const key = element.dataset.i18nPlaceholder;
+        if (translations[language][key]) {
+          element.placeholder = translations[language][key];
+        }
+      });
+
+      $("#languageSelect").value = language;
+      $("#fontSizeSelect").value = state.settings.fontSize;
+      document.documentElement.style.setProperty(
+        "--font-size",
+        state.settings.fontSize
+      );
+    }
+
+    function updateStats() {
+      $("#statArticles").textContent = state.articles.length;
+      $("#statRelationships").textContent = state.relationships.length;
+      $("#statNotes").textContent = state.notes.length;
+    }
+
+    function renderArticleOptions() {
+      const options = state.articles
+        .map(
+          (article) =>
+            `<option value="${article.id}">${escapeHtml(article.number)} — ${escapeHtml(article.title)}</option>`
+        )
+        .join("");
+
+      ["sourceArticle", "targetArticle", "noteArticle"].forEach((id) => {
+        $(`#${id}`).innerHTML = options;
+      });
+    }
+
+    function renderLegalResults() {
+      const query = $("#searchInput").value.trim().toLowerCase();
+      const category = $("#categoryFilter").value;
+
+      const matches = state.articles.filter((article) => {
+        const content = [
+          article.number,
+          article.category,
+          article.title,
+          article.text
+        ].join(" ").toLowerCase();
+
+        return (
+          (!query || content.includes(query)) &&
+          (category === "all" || article.category === category)
+        );
+      });
+
+      $("#legalResults").innerHTML =
+        matches.length > 0
+          ? matches
+              .map((article) => {
+                const articleRelationships = state.relationships.filter(
+                  (item) =>
+                    item.sourceId === article.id || item.targetId === article.id
+                );
+
+                const articleNotes = state.notes.filter(
+                  (note) => note.articleId === article.id
+                );
+
+                return `
+                  <article class="legal-card">
+                    <div class="legal-card-header">
+                      <div>
+                        <span class="badge">${escapeHtml(article.category)}</span>
+                        <h3>${escapeHtml(article.number)} — ${escapeHtml(article.title)}</h3>
+                      </div>
+                      <span class="badge accent">${articleNotes.length} note(s)</span>
+                    </div>
+
+                    <p>${escapeHtml(article.text)}</p>
+
+                    ${
+                      articleRelationships.length
+                        ? `
+                          <div class="relationship-list">
+                            ${articleRelationships
+                              .map((relationship) => {
+                                const source = state.articles.find(
+                                  (item) => item.id === relationship.sourceId
+                                );
+                                const target = state.articles.find(
+                                  (item) => item.id === relationship.targetId
+                                );
+
+                                return `
+                                  <div class="relationship-item">
+                                    <span>
+                                      <strong>${escapeHtml(source?.number || "")}</strong>
+                                      ${escapeHtml(relationship.type)}
+                                      <strong>${escapeHtml(target?.number || "")}</strong>
+                                      <small>${escapeHtml(relationship.comment || "")}</small>
+                                    </span>
+                                  </div>
+                                `;
+                              })
+                              .join("")}
+                          </div>
+                        `
+                        : ""
+                    }
+
+                    ${
+                      articleNotes.length
+                        ? `
+                          <div class="relationship-list">
+                            ${articleNotes
+                              .map(
+                                (note) => `
+                                  <div class="relationship-item">
+                                    <span>${escapeHtml(note.text)}</span>
+                                    <button class="btn btn-danger btn-small" onclick="deleteNote('${note.id}')">
+                                      Delete
+                                    </button>
+                                  </div>
+                                `
+                              )
+                              .join("")}
+                          </div>
+                        `
+                        : ""
+                    }
+                  </article>
+                `;
+              })
+              .join("")
+          : `<div class="empty">No legal references match your search.</div>`;
+    }
+
+    function renderRelationships() {
+      const list = $("#relationshipList");
+
+      if (!state.relationships.length) {
+        list.innerHTML = `<div class="empty">No article relationships have been added.</div>`;
+        return;
+      }
+
+      list.innerHTML = state.relationships
+        .map((relationship) => {
+          const source = state.articles.find(
+            (article) => article.id === relationship.sourceId
+          );
+          const target = state.articles.find(
+            (article) => article.id === relationship.targetId
+          );
+
+          return `
+            <div class="relationship-item">
+              <span>
+                <strong>${escapeHtml(source?.number || "Unknown")}</strong>
+                ${escapeHtml(relationship.type)}
+                <strong>${escapeHtml(target?.number || "Unknown")}</strong>
+                <small>${escapeHtml(relationship.comment || "No comment")}</small>
+              </span>
+              <button class="btn btn-danger btn-small" onclick="deleteRelationship('${relationship.id}')">
+                Delete
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderNotes() {
+      const list = $("#notesList");
+
+      if (!state.notes.length) {
+        list.innerHTML = `<div class="empty">No annotations have been saved.</div>`;
+        return;
+      }
+
+      list.innerHTML = state.notes
+        .map((note) => {
+          const article = state.articles.find(
+            (item) => item.id === note.articleId
+          );
+
+          return `
+            <div class="legal-card">
+              <div class="legal-card-header">
+                <div>
+                  <span class="badge">${escapeHtml(article?.number || "Unknown article")}</span>
+                  <p>${escapeHtml(note.text)}</p>
+                </div>
+                <button class="btn btn-danger btn-small" onclick="deleteNote('${note.id}')">
+                  Delete
+                </button>
+              </div>
+              <small>${new Date(note.createdAt).toLocaleString()}</small>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function getExportData() {
+      return {
+        application: "LegalRef & Citation Index",
+        version: "1.0.0",
+        exportedAt: new Date().toISOString(),
+        articles: state.articles,
+        relationships: state.relationships,
+        notes: state.notes
+      };
+    }
+
+    function updatePreview() {
+      $("#jsonPreview").textContent = JSON.stringify(getExportData(), null, 2);
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportMarkdown() {
+      const lines = [
+        "# LegalRef & Citation Index",
+        "",
+        `Exported: ${new Date().toLocaleString()}`,
+        "",
+        "## Legal Articles",
+        ""
+      ];
+
+      state.articles.forEach((article) => {
+        lines.push(`### ${article.number} — ${article.title}`);
+        lines.push(`**Category:** ${article.category}`);
+        lines.push("");
+        lines.push(article.text);
+        lines.push("");
+      });
+
+      lines.push("## Relationships", "");
+      state.relationships.forEach((relationship) => {
+        const source = state.articles.find(
+          (article) => article.id === relationship.sourceId
+        );
+        const target = state.articles.find(
+          (article) => article.id === relationship.targetId
+        );
+
+        lines.push(
+          `- ${source?.number || "Unknown"} **${relationship.type}** ${
+            target?.number || "Unknown"
+          } — ${relationship.comment || ""}`
+        );
+      });
+
+      lines.push("", "## Annotations", "");
+      state.notes.forEach((note) => {
+        const article = state.articles.find(
+          (item) => item.id === note.articleId
+        );
+        lines.push(`- **${article?.number || "Unknown"}:** ${note.text}`);
+      });
+
+      downloadFile(
+        "legalref-index.md",
+        lines.join("\n"),
+        "text/markdown;charset=utf-8"
+      );
+    }
+
+    function initDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = () => {
+          const database = request.result;
+          if (!database.objectStoreNames.contains(FILE_STORE)) {
+            database.createObjectStore(FILE_STORE, { keyPath: "id" });
+          }
+        };
+
+        request.onsuccess = () => {
+          db = request.result;
+          resolve();
+        };
+
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function saveFile(file) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(FILE_STORE, "readwrite");
+        const store = transaction.objectStore(FILE_STORE);
+
+        const record = {
+          id: crypto.randomUUID(),
+          name: file.name,
+          type: file.type || "application/octet-stream",
+          size: file.size,
+          lastModified: file.lastModified,
+          createdAt: Date.now(),
+          blob: file
+        };
+
+        const request = store.add(record);
+        request.onsuccess = () => resolve(record);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function getAllFiles() {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(FILE_STORE, "readonly");
+        const request = transaction.objectStore(FILE_STORE).getAll();
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function deleteFile(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(FILE_STORE, "readwrite");
+        const request = transaction.objectStore(FILE_STORE).delete(id);
+
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return "0 Bytes";
+      const units = ["Bytes", "KB", "MB", "GB"];
+      const index = Math.floor(Math.log(bytes) / Math.log(1024));
+      return `${(bytes / Math.pow(1024, index)).toFixed(1)} ${units[index]}`;
+    }
+
+    async function renderFiles() {
+      const files = await getAllFiles();
+      const images = files.filter((file) => file.type.startsWith("image/"));
+      const documents = files.filter((file) => !file.type.startsWith("image/"));
+
+      $("#statFiles").textContent = files.length;
+
+      $("#imageList").innerHTML = images.length
+        ? images.map(fileTemplate).join("")
+        : `<div class="empty">No images stored yet.</div>`;
+
+      $("#fileList").innerHTML = documents.length
+        ? documents.map(fileTemplate).join("")
+        : `<div class="empty">No documents stored yet.</div>`;
+
+      const textFiles = documents.filter((file) =>
+        /\.(txt|md|csv|json|html?|xml)$/i.test(file.name)
+      );
+
+      $("#analysisFileSelect").innerHTML = textFiles.length
+        ? `<option value="">Select a text file</option>` +
+          textFiles
+            .map(
+              (file) =>
+                `<option value="${file.id}">${escapeHtml(file.name)}</option>`
+            )
+            .join("")
+        : `<option value="">No stored text files available</option>`;
+    }
+
+    function fileTemplate(file) {
+      return `
+        <div class="file-item">
+          <span>
+            <strong>${escapeHtml(file.name)}</strong>
+            <small>${escapeHtml(file.type)} · ${formatBytes(file.size)}</small>
+          </span>
+          <span class="actions">
+            <button class="btn btn-secondary btn-small" onclick="downloadStoredFile('${file.id}')">
+              Download
+            </button>
+            <button class="btn btn-danger btn-small" onclick="removeStoredFile('${file.id}')">
+              Delete
+            </button>
+          </span>
+        </div>
+      `;
+    }
+
+    async function downloadStoredFile(id) {
+      const files = await getAllFiles();
+      const file = files.find((item) => item.id === id);
+      if (!file) return;
+
+      const url = URL.createObjectURL(file.blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = file.name;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function removeStoredFile(id) {
+      await deleteFile(id);
+      await renderFiles();
+      showToast("Stored file deleted.");
+    }
+
+    async function processFiles(fileList) {
+      const files = [...fileList];
+
+      for (const file of files) {
+        try {
+          await saveFile(file);
+        } catch {
+          showToast(`Could not store ${file.name}.`);
+        }
+      }
+
+      await renderFiles();
+      showToast(`${files.length} file(s) stored locally.`);
+    }
+
+    async function readSelectedAnalysisText() {
+      const uploaded = $("#analysisUpload").files[0];
+
+      if (uploaded) {
+        return uploaded.text();
+      }
+
+      const selectedId = $("#analysisFileSelect").value;
+      if (!selectedId) {
+        throw new Error("Select or upload a text-based document first.");
+      }
+
+      const files = await getAllFiles();
+      const selected = files.find((file) => file.id === selectedId);
+
+      if (!selected) {
+        throw new Error("The selected file could not be found.");
+      }
+
+      return selected.blob.text();
+    }
+
+    function analyzeText(text) {
+      const cleaned = text.replace(/\s+/g, " ").trim();
+      const words = cleaned ? cleaned.split(/\s+/) : [];
+      const sentences = cleaned
+        ? cleaned.split(/[.!?]+/).map((item) => item.trim()).filter(Boolean)
+        : [];
+
+      const legalTerms = [
+        "contract",
+        "liability",
+        "obligation",
+        "breach",
+        "damages",
+        "evidence",
+        "jurisdiction",
+        "consent",
+        "capacity",
+        "law",
+        "article",
+        "agreement",
+        "claim",
+        "duty",
+        "rights",
+        "proof"
+      ];
+
+      const lower = cleaned.toLowerCase();
+      const termMatches = legalTerms
+        .filter((term) => lower.includes(term))
+        .map((term) => {
+          const count = (lower.match(new RegExp(`\\b${term}\\b`, "g")) || [])
+            .length;
+          return `${term} (${count})`;
+        });
+
+      const keySentences = sentences
+        .filter((sentence) => sentence.length > 45)
+        .slice(0, 5);
+
+      return [
+        `Document length: ${words.length} words`,
+        `Estimated reading time: ${Math.max(1, Math.ceil(words.length / 220))} minute(s)`,
+        `Detected legal terms: ${termMatches.length ? termMatches.join(", ") : "None detected"}`,
+        "",
+        "Potential key provisions:",
+        keySentences.length
+          ? keySentences.map((sentence) => `• ${sentence}`).join("\n")
+          : "• No sufficiently long provisions were detected.",
+        "",
+        "Review recommendation:",
+        "Verify the extracted points against the original document and applicable law before relying on them."
+      ].join("\n");
+    }
+
+    function generateQuestions(text, level) {
+      const sentences = text
+        .replace(/\s+/g, " ")
+        .split(/[.!?]+/)
+        .map((item) => item.trim())
+        .filter((item) => item.length > 45);
+
+      const source = sentences.length
+        ? sentences
+        : [
+            "A contract requires legally valid consent and a lawful object.",
+            "A party may be liable for foreseeable loss caused by contractual breach.",
+            "The burden of proof generally rests with the party asserting a fact."
+          ];
+
+      const selected = [...new Set(source)].sort(() => Math.random() - 0.5).slice(0, 3);
+
+      return selected.map((sentence, index) => {
+        const words = sentence.split(/\s+/);
+        const answer = words[Math.min(4, words.length - 1)];
+        const distractors = ["jurisdiction", "evidence", "procedure", "capacity"]
+          .filter((word) => word.toLowerCase() !== answer.toLowerCase())
+          .slice(0, 3);
+
+        const options = [answer, ...distractors].sort(() => Math.random() - 0.5);
+
+        return {
+          id: crypto.randomUUID(),
+          level,
+          question: `Which concept is most directly illustrated by this provision?\n“${sentence}”`,
+          options,
+          answer
+        };
+      });
+    }
+
+    function renderQuiz() {
+      $("#quizList").innerHTML = generatedQuiz.length
+        ? generatedQuiz
+            .map(
+              (quiz, index) => `
+                <div class="quiz-item" style="display:block">
+                  <strong>Question ${index + 1} · ${escapeHtml(quiz.level)}</strong>
+                  <p>${escapeHtml(quiz.question)}</p>
+                  ${quiz.options
+                    .map(
+                      (option) => `
+                        <label class="quiz-option">
+                          <input type="radio" name="quiz-${quiz.id}" value="${escapeHtml(option)}" />
+                          ${escapeHtml(option)}
+                        </label>
+                      `
+                    )
+                    .join("")}
+                  <button class="btn btn-secondary btn-small" onclick="checkAnswer('${quiz.id}')">
+                    Check Answer
+                  </button>
+                  <span id="result-${quiz.id}"></span>
+                </div>
+              `
+            )
+            .join("")
+        : "";
+    }
+
+    function checkAnswer(id) {
+      const quiz = generatedQuiz.find((item) => item.id === id);
+      const selected = document.querySelector(`input[name="quiz-${id}"]:checked`);
+      const result = $(`#result-${id}`);
+
+      if (!selected) {
+        result.textContent = " Select an answer first.";
+        result.style.color = "var(--warning)";
+        return;
+      }
+
+      if (selected.value === quiz.answer) {
+        result.textContent = " Correct.";
+        result.style.color = "var(--success)";
+        selected.closest(".quiz-option").classList.add("correct");
+      } else {
+        result.textContent = ` Incorrect. Correct answer: ${quiz.answer}`;
+        result.style.color = "var(--danger)";
+        selected.closest(".quiz-option").classList.add("incorrect");
+      }
+    }
+
+    function bindDropZone(zoneId, inputId) {
+      const zone = $(`#${zoneId}`);
+      const input = $(`#${inputId}`);
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        zone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          zone.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        zone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          zone.classList.remove("dragover");
+        });
+      });
+
+      zone.addEventListener("drop", (event) => {
+        processFiles(event.dataTransfer.files);
+      });
+
+      input.addEventListener("change", () => {
+        processFiles(input.files);
+        input.value = "";
+      });
+    }
+
+    window.deleteRelationship = function (id) {
+      state.relationships = state.relationships.filter(
+        (relationship) => relationship.id !== id
+      );
+      persistState();
+      renderRelationships();
+      renderLegalResults();
+      showToast("Relationship deleted.");
+    };
+
+    window.deleteNote = function (id) {
+      state.notes = state.notes.filter((note) => note.id !== id);
+      persistState();
+      renderNotes();
+      renderLegalResults();
+      showToast("Note deleted.");
+    };
+
+    window.downloadStoredFile = downloadStoredFile;
+    window.removeStoredFile = removeStoredFile;
+    window.checkAnswer = checkAnswer;
+
+    $("#languageSelect").addEventListener("change", (event) => {
+      state.settings.language = event.target.value;
+      persistState();
+      translatePage();
+    });
+
+    $("#fontSizeSelect").addEventListener("change", (event) => {
+      state.settings.fontSize = event.target.value;
+      persistState();
+      translatePage();
+    });
+
+    $("#searchInput").addEventListener("input", renderLegalResults);
+    $("#categoryFilter").addEventListener("change", renderLegalResults);
+
+    $("#resetSearchBtn").addEventListener("click", () => {
+      $("#searchInput").value = "";
+      $("#categoryFilter").value = "all";
+      renderLegalResults();
+    });
+
+    $("#relationshipForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const sourceId = $("#sourceArticle").value;
+      const targetId = $("#targetArticle").value;
+
+      if (sourceId === targetId) {
+        showToast("Source and target articles must be different.");
+        return;
+      }
+
+      state.relationships.push({
+        id: crypto.randomUUID(),
+        sourceId,
+        targetId,
+        type: $("#relationType").value,
+        comment: $("#relationshipComment").value.trim(),
+        createdAt: Date.now()
+      });
+
+      event.target.reset();
+      persistState();
+      renderRelationships();
+      renderLegalResults();
+      showToast("Relationship added.");
+    });
+
+    $("#noteForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      state.notes.push({
+        id: crypto.randomUUID(),
+        articleId: $("#noteArticle").value,
+        text: $("#noteText").value.trim(),
+        createdAt: Date.now()
+      });
+
+      event.target.reset();
+      persistState();
+      renderNotes();
+      renderLegalResults();
+      showToast("Annotation saved.");
+    });
+
+    $("#analyzeBtn").addEventListener("click", async () => {
+      try {
+        const text = await readSelectedAnalysisText();
+        currentAnalysisText = text;
+        $("#analysisOutput").textContent = analyzeText(text);
+        showToast("Document analysis completed.");
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    $("#generateQuizBtn").addEventListener("click", async () => {
+      try {
+        const text = currentAnalysisText || (await readSelectedAnalysisText());
+        currentAnalysisText = text;
+        generatedQuiz = generateQuestions(text, $("#quizLevel").value);
+        renderQuiz();
+        showToast("A new quiz was generated.");
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    $("#shareAppBtn").addEventListener("click", async () => {
+      const shareData = {
+        title: "LegalRef & Citation Index",
+        text: "Legal research, citation indexing, annotations, and document analysis.",
+        url: window.location.href
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+          showToast("Application shared.");
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          showToast("Application URL copied to clipboard.");
+        }
+      } catch {
+        showToast("Sharing was cancelled or unavailable.");
+      }
+    });
+
+    $("#exportJsonBtn").addEventListener("click", () => {
+      downloadFile(
+        "legalref-index.json",
+        JSON.stringify(getExportData(), null, 2),
+        "application/json;charset=utf-8"
+      );
+    });
+
+    $("#exportMarkdownBtn").addEventListener("click", exportMarkdown);
+
+    $("#printPdfBtn").addEventListener("click", () => {
+      window.print();
+    });
+
+    $("#clearDataBtn").addEventListener("click", () => {
+      const confirmed = confirm(
+        "Delete all relationships and annotations? Articles will remain."
+      );
+
+      if (!confirmed) return;
+
+      state.relationships = [];
+      state.notes = [];
+      persistState();
+      renderRelationships();
+      renderNotes();
+      renderLegalResults();
+      showToast("Metadata cleared.");
+    });
+
+    async function init() {
+      loadState();
+      translatePage();
+      renderArticleOptions();
+      renderLegalResults();
+      renderRelationships();
+      renderNotes();
+      updatePreview();
+      updateStats();
+
+      try {
+        await initDatabase();
+        await renderFiles();
+        bindDropZone("imageDropZone", "imageInput");
+        bindDropZone("fileDropZone", "fileInput");
+      } catch {
+        showToast("IndexedDB is unavailable in this browser.");
+      }
+    }
+
+    init();
+  </script>
 </body>
 </html>
