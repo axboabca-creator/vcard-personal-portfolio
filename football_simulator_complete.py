@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Tuple
 
 
 class Position(Enum):
-    STRIKER = "مهاجم"
+    STRIKER = "مهاجم رأس حربة"
     WINGER = "جناح"
     MIDFIELDER = "وسط الملعب"
     DEFENDER = "مدافع"
